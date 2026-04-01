@@ -262,6 +262,7 @@ export default function Hero() {
                   transition={{ duration: 0.8, ease: "circOut" }}
                   alt={`Wegweiser German language culture - slide ${currentSlide + 1}`}
                   loading="eager"
+                  fetchPriority="high"
                   className="absolute inset-0 w-full h-full object-cover z-10"
                 />
               </AnimatePresence>

@@ -39,7 +39,7 @@ const itemVariants: any = {
   visible: {
     opacity: 1,
     y: 0,
-    filter: 'blur(4px)',
+    filter: 'blur(0px)',
     transition: { duration: 0.5, ease: "easeOut" }
   }
 }
