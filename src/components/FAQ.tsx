@@ -1,0 +1,202 @@
+import { useState, useRef } from 'react'
+import { Plus, HelpCircle } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+
+const faqs = [
+  {
+    question: "Nemis tilini bilmay, Wegweiser-ga kela olamanmi?",
+    answer: "Ha, albatta! Yangi talabalarimiz uchun test sinovlari o'tkazamiz. Uning natijalariga ko'ra mutaxassislarimiz talabalarni guruhlarga ajratishadi.",
+  },
+  {
+    question: "Nemis tili kurslariga necha yoshdan ariza topshirish mumkin?",
+    answer: "Minimal yosh - 13. Shu bilan birga, barcha voyaga yetmaganlar uchun ularning ota-onalari yoki vasiylar to'g'risida ma'lumot taqdim etilishi shart.",
+  },
+  {
+    question: "Onlayn o'rganish ham mumkinmi yoki faqat offline?",
+    answer: "Ikkalasi ham! Intensive 3-oylik kurs klassik; Standard 6-oylik gibrid (onlayn + offline); Foundation 9-oylik o'zaro onlayn. O'z jadvalingizga moslab tanlang.",
+  },
+  {
+    question: "O'quvchilarni kerakli adabiyotlar bilan taminlaysizlarmi?",
+    answer: "Tanlangan nemis tili kursi uchun haq to'lagandan so'ng, markazimiz talabalarga barcha qo'llanmalar va boshqa o'quv materiallarini taqdim etadi.",
+  },
+  {
+    question: "Bepul xizmatlardan qanday foydalanish mumkin?",
+    answer: "Bepul sinov darsiga barcha xohlovchilar qatnashishlari mumkin. Buning uchun mazkur sahifaning yuqori qismidagi formadan foydalangan holda ro'yxatdan o'tish kifoya.",
+  },
+]
+
+const containerVariants: any = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+}
+
+const itemVariants: any = {
+  hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.6, ease: "circOut" }
+  }
+}
+
+export default function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  return (
+    <section
+      ref={sectionRef}
+      id="faq"
+      className="relative py-24 w-full overflow-hidden"
+      style={{ background: 'var(--color-background)' }}
+      aria-label="FAQ section"
+    >
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-full h-full pointer-events-none opacity-5"
+           style={{ background: 'radial-gradient(circle at 80% 20%, rgba(16, 110, 251, 0.4) 0%, transparent 50%)', filter: 'blur(100px)' }} />
+
+      <div className="w-content mx-auto flex flex-col gap-16 relative z-10">
+        {/* Header */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex flex-col md:flex-row gap-8 md:items-end justify-between"
+        >
+          <div className="flex flex-col gap-6 max-w-3xl">
+            <motion.div variants={itemVariants}>
+              <div className="badge-pill">
+                <HelpCircle className="h-3.5 w-3.5" />
+                <span>YORDAM MARKAZI</span>
+              </div>
+            </motion.div>
+            <motion.h2
+              variants={itemVariants}
+              className="text-balance font-bold"
+              style={{
+                fontSize: 'clamp(2.2rem, 5.5vw, 3.8rem)',
+                color: 'var(--color-foreground)',
+                letterSpacing: '-0.04em',
+                lineHeight: '1.05',
+              }}
+            >
+              Tez-tez so'raladigan savollar
+            </motion.h2>
+            <motion.p
+              variants={itemVariants}
+              className="leading-relaxed text-balance"
+              style={{ 
+                fontSize: 'var(--text-lg)', 
+                color: 'rgba(0, 6, 18, 0.6)', 
+                lineHeight: '1.7' 
+              }}
+            >
+              Sizda tug'ilishi mumkin bo'lgan savollarga javob oling. 
+              Agar savolingiz bo'lsa, mutaxassislarimiz bilan bog'laning.
+            </motion.p>
+          </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Left Column: Image / Stats */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "circOut" }}
+            className="lg:col-span-4 flex flex-col gap-8"
+          >
+            <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden group shadow-2xl">
+              <img
+                src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=800&q=80"
+                alt="Wegweiser FAQ"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#106EFB]/40 to-transparent" />
+              <div className="absolute bottom-8 left-8 right-8">
+                <p className="text-white font-bold text-lg leading-tight">
+                  Sizning muvaffaqiyatingiz — bizning maqsadimiz.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex flex-col gap-4 p-8 rounded-[2rem] bg-gray-50 border border-gray-100">
+              <h4 className="font-bold text-gray-900">Yordam kerakmi?</h4>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                Bizning professional jamoamiz har qanday savolingizga javob berishga tayyor.
+              </p>
+              <button 
+                onClick={() => {
+                  const el = document.getElementById('contact')
+                  if (el) el.scrollIntoView({ behavior: 'smooth' })
+                }}
+                className="mt-2 text-[#106EFB] font-bold text-sm flex items-center gap-2 hover:underline"
+              >
+                Biz bilan bog'lanish <Plus className="h-4 w-4" />
+              </button>
+            </div>
+          </motion.div>
+
+          {/* Right Column: Accordion */}
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="lg:col-span-8 flex flex-col gap-4"
+          >
+            {faqs.map((faq, i) => (
+              <motion.div
+                key={i}
+                variants={itemVariants}
+                className={`rounded-[2rem] border transition-all duration-500 overflow-hidden ${
+                  openIndex === i 
+                    ? 'bg-white border-[#106EFB]/30 shadow-xl shadow-primary/5' 
+                    : 'bg-gray-50/50 border-gray-100 hover:border-gray-200'
+                }`}
+              >
+                <button
+                  onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                  className="w-full flex items-center justify-between p-6 md:p-8 text-left"
+                >
+                  <span className="text-lg md:text-xl font-bold text-gray-900 pr-8">{faq.question}</span>
+                  <div className={`h-10 w-10 shrink-0 rounded-full flex items-center justify-center transition-all duration-500 ${
+                    openIndex === i ? 'bg-[#106EFB] text-white rotate-45' : 'bg-white text-gray-400 border border-gray-100'
+                  }`}>
+                    <Plus className="h-5 w-5" />
+                  </div>
+                </button>
+                
+                <AnimatePresence>
+                  {openIndex === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: "circOut" }}
+                    >
+                      <div className="px-6 md:px-8 pb-8">
+                        <div className="h-px w-full bg-gray-100 mb-6" />
+                        <p className="text-gray-600 leading-relaxed text-lg">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
