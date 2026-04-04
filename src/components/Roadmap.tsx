@@ -2,11 +2,11 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { useRef } from 'react'
 
 // Import 3D Icons
-import flagIcon from '../assets/icons/3d_german_flag.png'
-import capIcon from '../assets/icons/3d_graduation_cap.png'
-import uniIcon from '../assets/icons/3d_university.png'
-import passportIcon from '../assets/icons/3d_passport.png'
-import planeIcon from '../assets/icons/3d_airplane.png'
+import flagIcon from '../assets/icons/3d_german_flag.webp'
+import capIcon from '../assets/icons/3d_graduation_cap.webp'
+import uniIcon from '../assets/icons/3d_university.webp'
+import passportIcon from '../assets/icons/3d_passport.webp'
+import planeIcon from '../assets/icons/3d_airplane.webp'
 
 const steps = [
   {
@@ -125,6 +125,7 @@ export default function Roadmap() {
                       src={step.icon} 
                       alt={step.title}
                       className="w-full h-full object-contain filter brightness-110"
+                      loading="lazy"
                     />
                   </motion.div>
                   

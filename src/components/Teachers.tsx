@@ -8,61 +8,61 @@ const teachers = [
     name: "Komilov Furqatbek",
     degree: "C1 Goethe and CEFR",
     age: 29,
-    img: "/Teachers/1.png"
+    img: "/Teachers/1.webp"
   },
   {
     name: "Tamila Iminova",
     degree: "Test DaF B2",
     age: 18,
-    img: "/Teachers/2.png"
+    img: "/Teachers/2.webp"
   },
   {
     name: "Fotimaxon Adhamova",
     degree: "CEFR B2",
     age: 21,
-    img: "/Teachers/3.png"
+    img: "/Teachers/3.webp"
   },
   {
     name: "Nilufar Orifjonova",
     degree: "Goethe B2",
     age: 21,
-    img: "/Teachers/4.png"
+    img: "/Teachers/4.webp"
   },
   {
     name: "Doniyorbek Khoshimov",
     degree: "Goethe B2",
     age: 24,
-    img: "/Teachers/5.png"
+    img: "/Teachers/5.webp"
   },
   {
     name: "Lobarxon Hamidova",
     degree: "Test DaF C1, Goethe C1, CEFR C1",
     age: 20,
-    img: "/Teachers/6.png"
+    img: "/Teachers/6.webp"
   },
   {
     name: "Tursunali Sodirjonov",
     degree: "ECL B2",
     age: 23,
-    img: "/Teachers/7 (2).png"
+    img: "/Teachers/7 (2).webp"
   },
   {
     name: "Azima Ahmadova",
     degree: "DSD C1, CEFR C1",
     age: 20,
-    img: "/Teachers/8.png"
+    img: "/Teachers/8.webp"
   },
   {
     name: "Samariddin Tolibjonov",
     degree: "ÖSD B2",
     age: 24,
-    img: "/Teachers/9.png"
+    img: "/Teachers/9.webp"
   },
   {
     name: "Umidaxon Ne'matova",
     degree: "Goethe B2",
     age: 22,
-    img: "/Teachers/10.png"
+    img: "/Teachers/10.webp"
   }
 ]
 
@@ -193,6 +193,7 @@ export default function Teachers({ limit = 100 }: { limit?: number }) {
                 src={t.img}
                 alt={t.name}
                 className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100"
+                loading="lazy"
               />
               
               {/* Gradient Overlay */}

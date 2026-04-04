@@ -21,9 +21,8 @@ export default function Hero() {
 
   const [currentSlide, setCurrentSlide] = useState(0)
   const images = [
-    '/hero_1.jpg',
-    '/hero_2.jpg',
-    '/hero_3.jpg'
+    '/hero_1.webp',
+    '/hero_3.webp'
   ]
 
   useEffect(() => {

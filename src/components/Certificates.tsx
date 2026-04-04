@@ -2,19 +2,19 @@ import { motion } from 'framer-motion'
 import { Award, ShieldCheck } from 'lucide-react'
 
 const row1 = [
-  '/Certifiates/Cefr2.jpg',
-  '/Certifiates/Cefr4.jpg',
-  '/Certifiates/Cefr6.jpg',
-  '/Certifiates/Cefr8.jpg',
-  '/Certifiates/Cefr10.jpg',
+  '/Certifiates/Cefr2.webp',
+  '/Certifiates/Cefr4.webp',
+  '/Certifiates/Cefr6.webp',
+  '/Certifiates/Cefr8.webp',
+  '/Certifiates/Cefr10.webp',
 ]
 
 const row2 = [
-  '/Certifiates/Cefr3.jpg',
-  '/Certifiates/Cefr5.jpg',
-  '/Certifiates/Cefr7.jpg',
-  '/Certifiates/Cefr9.jpg',
-  '/Certifiates/Cefr2.jpg',
+  '/Certifiates/Cefr3.webp',
+  '/Certifiates/Cefr5.webp',
+  '/Certifiates/Cefr7.webp',
+  '/Certifiates/Cefr9.webp',
+  '/Certifiates/Cefr2.webp',
 ]
 
 const MarqueeRow = ({ images, speed, reverse = false }: { images: string[], speed: number, reverse?: boolean }) => {
@@ -45,6 +45,7 @@ const MarqueeRow = ({ images, speed, reverse = false }: { images: string[], spee
               src={src}
               alt={`Certificate ${idx}`}
               className="w-full h-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
+              loading="lazy"
             />
             {/* Subtle Inner Glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-black/[0.02] to-transparent pointer-events-none" />

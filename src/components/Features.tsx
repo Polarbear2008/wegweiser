@@ -7,19 +7,19 @@ const features = [
     title: 'Test markazi',
     description: "Maktabimizda alohida test markazi mavjud. Bu yerda siz MOCK imtihonlar orqali bilim darajangizni sinab ko'rishingiz mumkin. Shuningdek, haqiqiy Goethe, TestDaF yoki DSD imtihonlariga tayyorgarlik ko'rish bo'yicha to'liq yo'naltirish beriladi.",
     icon: CircleCheckBig,
-    img: '/feature_test.jpg',
+    img: '/feature_test.webp',
   },
   {
     title: 'Co Working zonalar',
     description: "Har bir filialimizda o'quvchilarimiz uchun maxsus co-working zonalar mavjud. Bu yerda siz darslardan bo'sh vaqtingizda nemis tilini mustaqil o'rganishingiz mumkin.",
     icon: BookOpen,
-    img: '/feature_coworking.jpg',
+    img: '/feature_coworking.webp',
   },
   {
     title: "Bepul ikkinchi o'qituvchi",
     description: "Mavzuni yaxshi o'zlashtirolmagan bo'lsangiz, yordamchi o'qituvchilar har doim yoningizda va istagan mavzuyingizni qayta tushuntirib berishadi.",
     icon: Briefcase,
-    img: '/feature_teacher.jpg',
+    img: '/feature_teacher.webp',
   },
 ]
 

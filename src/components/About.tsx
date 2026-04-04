@@ -120,7 +120,8 @@ export default function About() {
               <img
                 alt="Wegweiser German learning center facility"
                 className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700"
-                src="/about.jpg"
+                src="/about.webp"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#070a11]/80 via-transparent to-transparent" />
             </motion.div>
