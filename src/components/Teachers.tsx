@@ -7,63 +7,73 @@ const teachers = [
   {
     name: "Komilov Furqatbek",
     degree: "C1 Goethe and CEFR",
-    age: 29,
     img: "/Teachers/1.webp"
   },
   {
-    name: "Tamila Iminova",
-    degree: "Test DaF B2",
-    age: 18,
+    name: "Xoshimov Doniyorbek",
+    degree: "Goethe B2",
     img: "/Teachers/2.webp"
   },
   {
-    name: "Fotimaxon Adhamova",
-    degree: "CEFR B2",
-    age: 21,
+    name: "Ahmadova Azima",
+    degree: "DSD C1, CEFR C1",
     img: "/Teachers/3.webp"
   },
   {
-    name: "Nilufar Orifjonova",
-    degree: "Goethe B2",
-    age: 21,
+    name: "Sodirjonov Tursunali",
+    degree: "ECL B2",
     img: "/Teachers/4.webp"
   },
   {
-    name: "Doniyorbek Khoshimov",
-    degree: "Goethe B2",
-    age: 24,
+    name: "Tolibjonov Samariddin",
+    degree: "ÖSD B2",
     img: "/Teachers/5.webp"
   },
   {
-    name: "Lobarxon Hamidova",
-    degree: "Test DaF C1, Goethe C1, CEFR C1",
-    age: 20,
+    name: "Azimjonov Sardor",
+    degree: "Goethe B2",
     img: "/Teachers/6.webp"
   },
   {
-    name: "Tursunali Sodirjonov",
-    degree: "ECL B2",
-    age: 23,
+    name: "Abdug'aniev Oybek",
+    degree: "Goethe B2",
     img: "/Teachers/7 (2).webp"
   },
   {
-    name: "Azima Ahmadova",
-    degree: "DSD C1, CEFR C1",
-    age: 20,
+    name: "Olimov Mirzo Ulug'bek",
+    degree: "Goethe B2",
     img: "/Teachers/8.webp"
   },
   {
-    name: "Samariddin Tolibjonov",
-    degree: "ÖSD B2",
-    age: 24,
+    name: "Anvarova Ominaxon",
+    degree: "Goethe B2",
     img: "/Teachers/9.webp"
   },
   {
-    name: "Umidaxon Ne'matova",
+    name: "Orufjonova Nilufar",
     degree: "Goethe B2",
-    age: 22,
     img: "/Teachers/10.webp"
-  }
+  },
+  {
+    name: "Adxamova Fotimaxon",
+    degree: "CEFR B2",
+    img: "/Teachers/11.webp"
+  },
+  {
+    name: "Iminova Tamilova",
+    degree: "Test DaF B2",
+    img: "/Teachers/12.webp"
+  },
+  {
+    name: "Hamidova Lobarxon",
+    degree: "Test DaF C1, Goethe C1, CEFR C1",
+    img: "/Teachers/13.webp"
+  },
+  {
+    name: "Mamatisaqov Oyatillo",
+    degree: "Goethe B2",
+    img: "/Teachers/14.webp"
+  },
 ]
 
 const containerVariants: any = {
@@ -201,20 +211,13 @@ export default function Teachers({ limit = 100 }: { limit?: number }) {
 
               {/* Content Overlay */}
               <div className="absolute inset-0 p-8 flex flex-col justify-end gap-2">
-                <div className="flex justify-between items-end">
-                  <div className="flex flex-col gap-1">
-                    <h3 className="font-bold text-white text-2xl tracking-tight leading-tight">
-                      {t.name}
-                    </h3>
-                    <p className="text-[#106EFB] font-bold text-sm tracking-wide">
-                      {t.degree}
-                    </p>
-                  </div>
-                  
-                  {/* Age Badge */}
-                  <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3 py-1 text-[11px] font-bold text-white/80">
-                    {t.age} yosh
-                  </div>
+                <div className="flex flex-col gap-1">
+                  <h3 className="font-bold text-white text-2xl tracking-tight leading-tight">
+                    {t.name}
+                  </h3>
+                  <p className="text-[#106EFB] font-bold text-sm tracking-wide">
+                    {t.degree}
+                  </p>
                 </div>
               </div>
 

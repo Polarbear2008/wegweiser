@@ -1,30 +1,49 @@
 import { useState, useRef } from 'react'
-import { Rocket, Check, Crown, Flame, Zap, User, Users, Baby } from 'lucide-react'
+import { Rocket, Check, Flame, Zap, User } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+
+const sharedFeatures = [
+  "Haftada 3 marotaba dars",
+  "Har bir dars 1.5 soat",
+  "Bepul tadbirlar (har oyda)",
+  "Malakali o'qituvchilar",
+  "Support teacher",
+  "Zamonaviy jihozlar",
+  "22:00gacha bepul co-working zona",
+]
+
+const intensiveFeatures = [
+  "Haftada 5 marotaba dars",
+  "Har bir dars 1.5 soat",
+  "Bepul tadbirlar (har oyda)",
+  "Malakali o'qituvchilar",
+  "Support teacher",
+  "Zamonaviy jihozlar",
+  "22:00gacha bepul co-working zona",
+]
 
 const pricingCategories = [
   { id: 'standard', label: 'Standart', icon: Zap },
   { id: 'intensive', label: 'Intensiv', icon: Flame },
-  { id: 'special', label: 'Maxsus', icon: Crown },
+  { id: 'individual', label: 'Individual', icon: User },
 ]
 
 const pricingData: any = {
   standard: [
-    { level: 'A1', price: '350 000', period: 'oy', features: ['Haftada 3 kun', 'Goethe materiallari', 'MOCK imtihonlar'] },
-    { level: 'A2', price: '370 000', period: 'oy', features: ['Haftada 3 kun', 'Goethe materiallari', 'MOCK imtihonlar'] },
-    { level: 'B1', price: '400 000', period: 'oy', features: ['Haftada 3 kun', 'TestDaF tayyorlov', 'Suhbat darslari'], popular: true },
-    { level: 'B2', price: '450 000', period: 'oy', features: ['Haftada 3 kun', 'TestDaF tayyorlov', 'Akademik nemis tili'] },
+    { level: 'A1', price: '350 000', period: 'oy', features: sharedFeatures },
+    { level: 'A2', price: '370 000', period: 'oy', features: sharedFeatures },
+    { level: 'B1', price: '400 000', period: 'oy', features: sharedFeatures, popular: true },
+    { level: 'B2', price: '450 000', period: 'oy', features: sharedFeatures },
   ],
   intensive: [
-    { level: 'A1', price: '600 000', period: 'oy', features: ['Haftada 5 kun', '2x tezkor o\'rganish', 'Maxsus metodika'] },
-    { level: 'A2', price: '700 000', period: 'oy', features: ['Haftada 5 kun', '2x tezkor o\'rganish', 'Maxsus metodika'], popular: true },
-    { level: 'B1', price: '800 000', period: 'oy', features: ['Haftada 5 kun', 'TestDaF intensiv', 'Suhbat marafonlari'] },
+    { level: 'A1', price: '600 000', period: 'oy', features: intensiveFeatures },
+    { level: 'A2', price: '700 000', period: 'oy', features: intensiveFeatures },
+    { level: 'B1', price: '800 000', period: 'oy', features: intensiveFeatures, popular: true },
+    { level: 'B2', price: '850 000', period: 'oy', features: intensiveFeatures },
   ],
-  special: [
-    { level: 'Kids', price: '280 000', period: 'oy', icon: Baby, features: ['O\'yin orqali o\'rganish', 'Boshlang\'ich poydevor', 'Kreativ darslar'] },
-    { level: 'Individual (2 kishi)', price: '750 000', period: 'oy / kishi', icon: Users, features: ['Shaxsiy yondashuv', 'Ikkita talaba uchun', 'Moslashuvchan jadval'] },
-    { level: 'Individual (1 kishi)', price: '1 300 000', period: 'oy', icon: User, features: ['100% shaxsiy darslar', 'Maksimal tezlik', 'Istalgan vaqtda'], popular: true },
-  ]
+  individual: [
+    { level: 'Individual', price: '1 300 000', period: 'oy', icon: User, features: sharedFeatures, popular: true },
+  ],
 }
 
 export default function Pricing() {
@@ -115,7 +134,7 @@ export default function Pricing() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+              className={`grid gap-6 ${activeTab === 'individual' ? 'grid-cols-1 max-w-sm mx-auto w-full' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'}`}
             >
               {pricingData[activeTab].map((plan: any, idx: number) => (
                 <motion.div
@@ -125,11 +144,11 @@ export default function Pricing() {
                     plan.popular 
                       ? 'bg-gradient-to-br from-white/[0.08] to-white/[0.03] border-white/20' 
                       : 'bg-white/[0.03] border-white/10 hover:border-white/20'
-                  } ${activeTab === 'special' && pricingData[activeTab].length < 4 ? 'col-span-1 lg:col-span-1 sm:col-span-2' : ''}`}
+                  }`}
                 >
                   {plan.popular && (
                     <div className="absolute top-6 right-6 h-9 w-9 rounded-full bg-[#106EFB] flex items-center justify-center shadow-lg shadow-primary/20 z-10">
-                      <Crown className="h-4.5 w-4.5 text-white" />
+                      <Check className="h-4 w-4 text-white" />
                     </div>
                   )}
 
@@ -190,6 +209,11 @@ export default function Pricing() {
             </motion.div>
           </AnimatePresence>
         </div>
+
+        {/* Schedule note */}
+        <p className="text-center text-white/40 text-sm font-medium mt-2">
+          📅 Siz uchun qulay kun va vaqtda darslar qo'yib beriladi
+        </p>
       </div>
     </section>
   )
