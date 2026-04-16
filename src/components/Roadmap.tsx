@@ -1,5 +1,7 @@
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { useRef } from 'react'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
 
 // Import 3D Icons
 import flagIcon from '../assets/icons/3d_german_flag.webp'
@@ -8,40 +10,107 @@ import uniIcon from '../assets/icons/3d_university.webp'
 import passportIcon from '../assets/icons/3d_passport.webp'
 import planeIcon from '../assets/icons/3d_airplane.webp'
 
-const steps = [
-  {
-    title: "NEMIS TILINI O'RGANISH",
-    description: "A1 dan B2 gacha bo'lgan barcha darajalar uchun professional o'quv dasturlari va tajribali ustozlar.",
-    icon: flagIcon,
-    color: "#106EFB"
-  },
-  {
-    title: "SERTIFIKAT OLISH",
-    description: "Goethe, TestDaF yoki Telc imtihonlariga maxsus tayyorgarlik va muvaffaqiyatli topshirish kafolati.",
-    icon: capIcon,
-    color: "#FFD700"
-  },
-  {
-    title: "UNIVERSITET VA KARYERA",
-    description: "Germaniyadagi eng yaxshi oliygohlar va Ausbildung (kasbiy ta'lim) dasturlariga yo'naltirish.",
-    icon: uniIcon,
-    color: "#FFFFFF"
-  },
-  {
-    title: "VISA VA HUJJATLAR",
-    description: "Germaniya elchixonasi uchun kerakli barcha hujjatlarni tayyorlashda to'liq ko'mak.",
-    icon: passportIcon,
-    color: "#106EFB"
-  },
-  {
-    title: "GERMANIYAGA SALOM!",
-    description: "Sizning orzingizdagi hayot Germaniyada boshlanadi. Biz siz bilan birgamiz!",
-    icon: planeIcon,
-    color: "#FFD700"
-  }
+const stepsIcons = [
+  { icon: flagIcon, color: '#106EFB' },
+  { icon: capIcon, color: '#FFD700' },
+  { icon: uniIcon, color: '#FFFFFF' },
+  { icon: passportIcon, color: '#106EFB' },
+  { icon: planeIcon, color: '#FFD700' },
 ]
 
+const stepsByLang: Record<Lang, Array<{ title: string; description: string }>> = {
+  UZ: [
+    {
+      title: "NEMIS TILINI O'RGANISH",
+      description: "A1 dan B2 gacha bo'lgan barcha darajalar uchun professional o'quv dasturlari va tajribali ustozlar.",
+    },
+    {
+      title: "SERTIFIKAT OLISH",
+      description: "Goethe, TestDaF yoki Telc imtihonlariga maxsus tayyorgarlik va muvaffaqiyatli topshirish kafolati.",
+    },
+    {
+      title: 'UNIVERSITET VA KARYERA',
+      description: "Germaniyadagi eng yaxshi oliygohlar va Ausbildung (kasbiy ta'lim) dasturlariga yo'naltirish.",
+    },
+    {
+      title: 'VISA VA HUJJATLAR',
+      description: "Germaniya elchixonasi uchun kerakli barcha hujjatlarni tayyorlashda to'liq ko'mak.",
+    },
+    {
+      title: 'GERMANIYAGA SALOM!',
+      description: 'Sizning orzingizdagi hayot Germaniyada boshlanadi. Biz siz bilan birgamiz!',
+    },
+  ],
+  EN: [
+    {
+      title: 'LEARN GERMAN',
+      description: 'Professional courses and experienced teachers for all levels from A1 to B2.',
+    },
+    {
+      title: 'GET YOUR CERTIFICATE',
+      description: 'Special preparation for Goethe, TestDaF, or Telc exams—plus confidence to succeed.',
+    },
+    {
+      title: 'UNIVERSITY & CAREER',
+      description: 'Guidance toward the best universities in Germany and Ausbildung (vocational training) programs.',
+    },
+    {
+      title: 'VISA & DOCUMENTS',
+      description: 'Full support in preparing all the documents needed by the German embassy.',
+    },
+    {
+      title: 'WELCOME TO GERMANY!',
+      description: 'Your dream life starts in Germany. We are with you!',
+    },
+  ],
+  RU: [
+    {
+      title: 'ИЗУЧАЙТЕ НЕМЕЦКИЙ',
+      description: 'Профессиональные программы и опытные преподаватели для всех уровней от A1 до B2.',
+    },
+    {
+      title: 'ПОЛУЧИТЕ СЕРТИФИКАТ',
+      description: 'Специальная подготовка к экзаменам Goethe, TestDaF или Telc и гарантия успешной сдачи.',
+    },
+    {
+      title: 'УНИВЕРСИТЕТ И КАРЬЕРА',
+      description: 'Помогаем ориентироваться на лучшие вузы Германии и программы Ausbildung (профессиональное обучение).',
+    },
+    {
+      title: 'ВИЗА И ДОКУМЕНТЫ',
+      description: 'Полная помощь в подготовке всех документов, необходимых для немецкого посольства.',
+    },
+    {
+      title: 'ПРИВЕТ, ГЕРМАНИЯ!',
+      description: 'Ваша жизнь мечты начинается в Германии. Мы рядом с вами!',
+    },
+  ],
+  DE: [
+    {
+      title: 'DEUTSCH LERNEN',
+      description: 'Professionelle Lernprogramme und erfahrene Lehrkräfte für alle Niveaus von A1 bis B2.',
+    },
+    {
+      title: 'ZERTIFIKAT ERHALTEN',
+      description: 'Gezielte Vorbereitung auf Goethe-, TestDaF- oder Telc-Prüfungen und eine Garantie für erfolgreiches Bestehen.',
+    },
+    {
+      title: 'UNIVERSITÄT & KARRIERE',
+      description: 'Ausrichtung auf die besten Hochschulen in Deutschland sowie auf Ausbildung-Programme (berufliche Bildung).',
+    },
+    {
+      title: 'VISA & UNTERLAGEN',
+      description: 'Umfassende Unterstützung bei der Vorbereitung aller Unterlagen für die deutsche Botschaft.',
+    },
+    {
+      title: 'HALLO, DEUTSCHLAND!',
+      description: 'Ihr Leben Ihres Traums beginnt in Deutschland. Wir sind an Ihrer Seite!',
+    },
+  ],
+}
+
 export default function Roadmap() {
+  const { lang } = useLang()
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -51,6 +120,18 @@ export default function Roadmap() {
   // Smooth scroll progress for the path
   const pathProg = useSpring(scrollYProgress, { stiffness: 50, damping: 20 })
   
+  const steps = stepsIcons.map((s, i) => ({
+    ...s,
+    ...stepsByLang[lang][i],
+  }))
+
+  const c: Record<Lang, { badge: string; headingPrefix: string; headingAccent: string; cta: string }> = {
+    UZ: { badge: "Sizning Yo'lingiz", headingPrefix: 'Germaniyada', headingAccent: '5 ta qadam', cta: 'Sayohatni boshlash →' },
+    EN: { badge: 'Your path', headingPrefix: 'In Germany', headingAccent: '5 steps', cta: 'Start your journey →' },
+    RU: { badge: 'Ваш путь', headingPrefix: 'В Германии', headingAccent: '5 шагов', cta: 'Начать путешествие →' },
+    DE: { badge: 'Ihr Weg', headingPrefix: 'In Deutschland', headingAccent: '5 Schritte', cta: 'Reise starten →' },
+  }[lang]
+
   return (
     <section 
       ref={containerRef}
@@ -71,7 +152,7 @@ export default function Roadmap() {
             viewport={{ once: true }}
             className="badge-pill mx-auto mb-6"
           >
-            Sizning Yo'lingiz
+            {c.badge}
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -80,7 +161,7 @@ export default function Roadmap() {
             transition={{ duration: 0.6 }}
             className="text-3xl md:text-6xl font-black tracking-tighter text-[#070a11] dark:text-white"
           >
-            Germaniyada <br /> <span className="text-[#106EFB]">5 ta qadam</span>
+            {c.headingPrefix} <br /> <span className="text-[#106EFB]">{c.headingAccent}</span>
           </motion.h2>
         </div>
 
@@ -163,7 +244,7 @@ export default function Roadmap() {
           className="mt-24 text-center"
         >
           <button className="bg-[#106EFB] text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-[#106EFB]/40 hover:-translate-y-1 transition-all duration-300 active:scale-95">
-            Sayohatni boshlash →
+            {c.cta}
           </button>
         </motion.div>
       </div>

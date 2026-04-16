@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
 import { Handshake } from 'lucide-react'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
 
 const partners = [
   {
@@ -34,7 +36,7 @@ const partners = [
   },
   {
     name: "McDonald's Deutschland",
-    logo: "https://static.wikia.nocookie.net/logopedia/images/c/cd/Mcdonalds_logo.svg/revision/latest?cb=20220514151346",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/3/36/McDonald%27s_Golden_Arches.svg",
     fallbackText: "McDonald's",
   },
   {
@@ -52,11 +54,41 @@ const partners = [
 // Duplicate for seamless infinite scroll
 const allPartners = [...partners, ...partners]
 
+const content: Record<Lang, {
+  badge: string
+  heading: string
+  description: string
+}> = {
+  UZ: {
+    badge: 'HAMKORLAR VA HOMIYLAR',
+    heading: 'Bizning ishonchli hamkorlarimiz',
+    description: 'Wegweiser jamoasi bu kompaniyalar bilan hamkorlikda ishlamoqda',
+  },
+  EN: {
+    badge: 'PARTNERS & SPONSORS',
+    heading: 'Our trusted partners',
+    description: 'The Wegweiser team is working in partnership with these companies',
+  },
+  RU: {
+    badge: 'ПАРТНЁРЫ И СПОНСОРЫ',
+    heading: 'Наши надёжные партнёры',
+    description: 'Команда Wegweiser работает в партнёрстве с этими компаниями',
+  },
+  DE: {
+    badge: 'PARTNER & SPONSOREN',
+    heading: 'Unsere vertrauenswürdigen Partner',
+    description: 'Das Wegweiser-Team arbeitet mit diesen Unternehmen zusammen',
+  },
+}
+
 export default function Partners() {
+  const { lang } = useLang()
+  const c = content[lang]
+
   return (
     <section
       id="partners"
-      aria-label="Partners and sponsors"
+      aria-label={c.heading}
       className="relative py-20 w-full overflow-hidden"
       style={{ background: 'var(--color-background)' }}
     >
@@ -74,7 +106,7 @@ export default function Partners() {
             className="badge-pill"
           >
             <Handshake className="h-3.5 w-3.5" />
-            <span>HAMKORLAR VA HOMIYLAR</span>
+            <span>{c.badge}</span>
           </motion.div>
 
           <motion.h2
@@ -89,7 +121,7 @@ export default function Partners() {
               lineHeight: '1.1',
             }}
           >
-            Bizning ishonchli hamkorlarimiz
+            {c.heading}
           </motion.h2>
 
           <motion.p
@@ -103,7 +135,7 @@ export default function Partners() {
               maxWidth: '480px',
             }}
           >
-            Wegweiser jamoasi bu kompaniyalar bilan hamkorlikda ishlamoqda
+            {c.description}
           </motion.p>
         </div>
       </div>

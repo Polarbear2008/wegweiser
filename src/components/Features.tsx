@@ -1,27 +1,103 @@
 import { useState, useRef } from 'react'
 import { Star, ChevronLeft, ChevronRight, CircleCheckBig, BookOpen, Briefcase } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
 
-const features = [
-  {
-    title: 'Test markazi',
-    description: "Maktabimizda alohida test markazi mavjud. Bu yerda siz MOCK imtihonlar orqali bilim darajangizni sinab ko'rishingiz mumkin. Shuningdek, haqiqiy Goethe, TestDaF yoki DSD imtihonlariga tayyorgarlik ko'rish bo'yicha to'liq yo'naltirish beriladi.",
-    icon: CircleCheckBig,
-    img: '/feature_test.webp',
-  },
-  {
-    title: 'Co Working zonalar',
-    description: "Har bir filialimizda o'quvchilarimiz uchun maxsus co-working zonalar mavjud. Bu yerda siz darslardan bo'sh vaqtingizda nemis tilini mustaqil o'rganishingiz mumkin.",
-    icon: BookOpen,
-    img: '/feature_coworking.webp',
-  },
-  {
-    title: "Bepul ikkinchi o'qituvchi",
-    description: "Mavzuni yaxshi o'zlashtirolmagan bo'lsangiz, yordamchi o'qituvchilar har doim yoningizda va istagan mavzuyingizni qayta tushuntirib berishadi.",
-    icon: Briefcase,
-    img: '/feature_teacher.webp',
-  },
-]
+const featuresByLang: Record<Lang, Array<{
+  title: string
+  description: string
+  icon: any
+  img: string
+}>> = {
+  UZ: [
+    {
+      title: 'Test markazi',
+      description: "Maktabimizda alohida test markazi mavjud. Bu yerda siz MOCK imtihonlar orqali bilim darajangizni sinab ko'rishingiz mumkin. Shuningdek, haqiqiy Goethe, TestDaF yoki DSD imtihonlariga tayyorgarlik ko'rish bo'yicha to'liq yo'naltirish beriladi.",
+      icon: CircleCheckBig,
+      img: '/feature_test.webp',
+    },
+    {
+      title: 'Co Working zonalar',
+      description: "Har bir filialimizda o'quvchilarimiz uchun maxsus co-working zonalar mavjud. Bu yerda siz darslardan bo'sh vaqtingizda nemis tilini mustaqil o'rganishingiz mumkin.",
+      icon: BookOpen,
+      img: '/feature_coworking.webp',
+    },
+    {
+      title: "Bepul ikkinchi o'qituvchi",
+      description: "Mavzuni yaxshi o'zlashtirolmagan bo'lsangiz, yordamchi o'qituvchilar har doim yoningizda va istagan mavzuyingizni qayta tushuntirib berishadi.",
+      icon: Briefcase,
+      img: '/feature_teacher.webp',
+    },
+  ],
+  EN: [
+    {
+      title: 'Test center',
+      description: 'We have a dedicated test center. Here you can test your level through MOCK exams. Full guidance is also provided for preparing for real Goethe, TestDaF, or DSD exams.',
+      icon: CircleCheckBig,
+      img: '/feature_test.webp',
+    },
+    {
+      title: 'Co-working areas',
+      description: 'Every branch has special co-working zones for students. Here you can independently study German during your free time between classes.',
+      icon: BookOpen,
+      img: '/feature_coworking.webp',
+    },
+    {
+      title: 'Free support teacher',
+      description: "If you haven't mastered a topic, support teachers are always by your side and will re-explain any subject you need.",
+      icon: Briefcase,
+      img: '/feature_teacher.webp',
+    },
+  ],
+  RU: [
+    {
+      title: 'Тестовый центр',
+      description: 'В нашей школе есть отдельный тестовый центр. Здесь вы можете проверить свой уровень знаний через MOCK-экзамены. Также предоставляется полное руководство по подготовке к реальным экзаменам Goethe, TestDaF или DSD.',
+      icon: CircleCheckBig,
+      img: '/feature_test.webp',
+    },
+    {
+      title: 'Зоны коворкинга',
+      description: 'В каждом филиале есть специальные коворкинг-зоны для студентов. Здесь вы можете самостоятельно изучать немецкий в свободное время.',
+      icon: BookOpen,
+      img: '/feature_coworking.webp',
+    },
+    {
+      title: 'Бесплатный помощник-преподаватель',
+      description: 'Если вы не усвоили тему, преподаватели-помощники всегда рядом и объяснят любую тему заново.',
+      icon: Briefcase,
+      img: '/feature_teacher.webp',
+    },
+  ],
+  DE: [
+    {
+      title: 'Testzentrum',
+      description: 'Wir haben ein eigenes Testzentrum. Hier können Sie Ihr Niveau durch MOCK-Prüfungen testen. Außerdem erhalten Sie eine umfassende Vorbereitung auf echte Goethe-, TestDaF- oder DSD-Prüfungen.',
+      icon: CircleCheckBig,
+      img: '/feature_test.webp',
+    },
+    {
+      title: 'Co-Working-Bereiche',
+      description: 'Jede Filiale verfügt über spezielle Co-Working-Zonen für Schüler. Hier können Sie in Ihrer Freizeit eigenständig Deutsch lernen.',
+      icon: BookOpen,
+      img: '/feature_coworking.webp',
+    },
+    {
+      title: 'Kostenloser Hilfslehrer',
+      description: 'Wenn Sie ein Thema nicht verstanden haben, stehen Ihnen Hilfslehrer jederzeit zur Seite und erklären jedes Thema erneut.',
+      icon: Briefcase,
+      img: '/feature_teacher.webp',
+    },
+  ],
+}
+
+const headerByLang: Record<Lang, { badge: string; heading: string; ariaLabel: string }> = {
+  UZ: { badge: 'ASOSIY USTUNLIKLAR', heading: 'Talabalar nega Wegweiser-ni tanlashadi', ariaLabel: 'Afzalliklar bo‘limi' },
+  EN: { badge: 'KEY ADVANTAGES', heading: 'Why students choose Wegweiser', ariaLabel: 'Key advantages section' },
+  RU: { badge: 'КЛЮЧЕВЫЕ ПРЕИМУЩЕСТВА', heading: 'Почему студенты выбирают Wegweiser', ariaLabel: 'Раздел преимуществ' },
+  DE: { badge: 'WICHTIGSTE VORTEILE', heading: 'Warum Studierende Wegweiser wählen', ariaLabel: 'Vorteile' },
+}
 
 const containerVariants: any = {
   hidden: { opacity: 0 },
@@ -45,6 +121,9 @@ const itemVariants: any = {
 }
 
 export default function Features() {
+  const { lang } = useLang()
+  const features = featuresByLang[lang]
+  const header = headerByLang[lang]
   const [activeIndex, setActiveIndex] = useState(0)
   const [direction, setDirection] = useState(0)
   const sectionRef = useRef<HTMLElement>(null)
@@ -83,7 +162,7 @@ export default function Features() {
       ref={sectionRef}
       id="courses"
       className="relative py-24 w-full overflow-hidden"
-      aria-label="Feature section"
+      aria-label={header.ariaLabel}
       style={{ background: 'var(--color-background)' }}
     >
       <div className="w-content mx-auto flex flex-col gap-16">
@@ -99,7 +178,7 @@ export default function Features() {
             <motion.div variants={itemVariants}>
               <div className="badge-pill">
                 <Star className="h-3.5 w-3.5" />
-                <span>ASOSIY USTUNLIKLAR</span>
+                <span>{header.badge}</span>
               </div>
             </motion.div>
             <motion.h2
@@ -112,7 +191,7 @@ export default function Features() {
                 lineHeight: '1.05',
               }}
             >
-              Talabalar nega Wegweiser-ni tanlashadi
+              {header.heading}
             </motion.h2>
           </div>
           

@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
 
 const partners = [
   { name: 'Goethe-Institut', logo: 'GOETHE' },
@@ -10,13 +12,43 @@ const partners = [
   { name: 'Humboldt', logo: 'Humboldt' },
 ]
 
+const content: Record<Lang, {
+  badge: string
+  heading: string
+  description: string
+}> = {
+  UZ: {
+    badge: 'HAMKORLARIMIZ',
+    heading: "Xalqaro miqyosda tan olingan ta'lim muassasalari bilan hamkorlik",
+    description: "Wegweiser Germaniyaning eng nufuzli muassasalari va xalqaro ta'lim tarmoqlari bilan hamkorlik qilib keladi.",
+  },
+  EN: {
+    badge: 'OUR PARTNERS',
+    heading: 'Partnered with internationally recognized educational institutions',
+    description: "Wegweiser cooperates with Germany's most prestigious institutions and international education networks.",
+  },
+  RU: {
+    badge: 'НАШИ ПАРТНЁРЫ',
+    heading: 'Сотрудничество с международно признанными учебными заведениями',
+    description: 'Wegweiser сотрудничает с самыми престижными учреждениями Германии и международными образовательными сетями.',
+  },
+  DE: {
+    badge: 'UNSERE PARTNER',
+    heading: 'Zusammenarbeit mit international anerkannten Bildungseinrichtungen',
+    description: 'Wegweiser kooperiert mit den renommiertesten Institutionen Deutschlands und internationalen Bildungsnetzwerken.',
+  },
+}
+
 export default function SocialProof() {
+  const { lang } = useLang()
+  const c = content[lang]
+
   return (
     <section
       id="socialproof"
       className="relative py-24 w-full overflow-hidden"
       style={{ background: '#070a11' }}
-      aria-label="Social proof section"
+      aria-label={c.heading}
     >
       <div className="w-content mx-auto flex flex-col gap-16">
         <div className="items-center text-center flex flex-col gap-6">
@@ -28,7 +60,7 @@ export default function SocialProof() {
             className="badge-pill"
             style={{ background: 'rgba(255, 255, 255, 0.05)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)' }}
           >
-            <span>HAMKORLARIMIZ</span>
+            <span>{c.badge}</span>
           </motion.div>
           
           <motion.h2
@@ -43,7 +75,7 @@ export default function SocialProof() {
               lineHeight: '1.2'
             }}
           >
-            Xalqaro miqyosda tan olingan <br /> ta'lim muassasalari bilan hamkorlik
+            {c.heading}
           </motion.h2>
           
           <motion.p
@@ -53,7 +85,7 @@ export default function SocialProof() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-white/50 text-center max-w-2xl text-lg leading-relaxed"
           >
-            Wegweiser Germaniyaning eng nufuzli muassasalari va xalqaro ta'lim tarmoqlari bilan hamkorlik qilib keladi.
+            {c.description}
           </motion.p>
         </div>
 

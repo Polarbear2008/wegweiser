@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
 import { Award, ShieldCheck } from 'lucide-react'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
 
 const row1 = [
   '/Certifiates/Cefr2.webp',
@@ -17,7 +19,49 @@ const row2 = [
   '/Certifiates/Cefr2.webp',
 ]
 
-const MarqueeRow = ({ images, speed, reverse = false }: { images: string[], speed: number, reverse?: boolean }) => {
+const content: Record<Lang, {
+  badge: string
+  heading: string
+  subtitle: string
+  footerLabel: string
+}> = {
+  UZ: {
+    badge: "MUVAFFAQIYAT TASDIG'I",
+    heading: 'Talabalarimizning natijalar',
+    subtitle: 'CEFR imtihonlaridan olingan sertifikatlar',
+    footerLabel: 'CEFR imtihonlaridan olingan sertifikatlar',
+  },
+  EN: {
+    badge: 'PROOF OF SUCCESS',
+    heading: "Our students' results",
+    subtitle: 'Certificates from CEFR examinations',
+    footerLabel: 'Certificates from CEFR examinations',
+  },
+  RU: {
+    badge: 'ПОДТВЕРЖДЕНИЕ УСПЕХА',
+    heading: 'Результаты наших студентов',
+    subtitle: 'Сертификаты экзаменов CEFR',
+    footerLabel: 'Сертификаты экзаменов CEFR',
+  },
+  DE: {
+    badge: 'ERFOLGSNACHWEIS',
+    heading: 'Ergebnisse unserer Studierenden',
+    subtitle: 'Zertifikate der CEFR-Prüfungen',
+    footerLabel: 'Zertifikate der CEFR-Prüfungen',
+  },
+}
+
+const MarqueeRow = ({
+  images,
+  speed,
+  reverse = false,
+  altPrefix,
+}: {
+  images: string[]
+  speed: number
+  reverse?: boolean
+  altPrefix: string
+}) => {
   // Duplicate images for seamless loop
   const displayImages = [...images, ...images, ...images]
 
@@ -43,7 +87,7 @@ const MarqueeRow = ({ images, speed, reverse = false }: { images: string[], spee
           >
             <img
               src={src}
-              alt={`Certificate ${idx}`}
+              alt={`${altPrefix} ${idx + 1}`}
               className="w-full h-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
               loading="lazy"
             />
@@ -57,6 +101,16 @@ const MarqueeRow = ({ images, speed, reverse = false }: { images: string[], spee
 }
 
 export default function Certificates() {
+  const { lang } = useLang()
+  const c = content[lang]
+  const altPrefixByLang: Record<Lang, string> = {
+    UZ: 'Sertifikat',
+    EN: 'Certificate',
+    RU: 'Сертификат',
+    DE: 'Zertifikat',
+  }
+  const altPrefix = altPrefixByLang[lang]
+
   return (
     <section id="certificates" className="relative py-16 w-full overflow-hidden" style={{ background: 'var(--color-background)' }}>
       {/* Background Decor */}
@@ -73,7 +127,7 @@ export default function Certificates() {
             className="badge-pill"
           >
             <ShieldCheck className="h-3.5 w-3.5" />
-            <span>MUVAFFAQIYAT TASDIG'I</span>
+            <span>{c.badge}</span>
           </motion.div>
 
           <motion.h2
@@ -88,7 +142,7 @@ export default function Certificates() {
               lineHeight: '1.1',
             }}
           >
-            Talabalarimizning natijalar
+            {c.heading}
           </motion.h2>
 
           <motion.p
@@ -97,14 +151,14 @@ export default function Certificates() {
             viewport={{ once: true, margin: "-50px" }}
             className="text-gray-500 text-base font-medium"
           >
-            CEFR imtihonlaridan olingan sertifikatlar
+            {c.subtitle}
           </motion.p>
         </div>
 
         {/* Gallery Tracks */}
         <div className="flex flex-col gap-2">
-          <MarqueeRow images={row1} speed={50} reverse={true} />
-          <MarqueeRow images={row2} speed={55} reverse={false} />
+          <MarqueeRow images={row1} speed={50} reverse={true} altPrefix={altPrefix} />
+          <MarqueeRow images={row2} speed={55} reverse={false} altPrefix={altPrefix} />
         </div>
 
         {/* Footer Stats Row */}
@@ -115,7 +169,7 @@ export default function Certificates() {
                 <Award className="h-4 w-4 text-[#106EFB]" />
               </div>
               <span className="text-gray-600 font-bold text-xs tracking-tight whitespace-nowrap">
-                CEFR imtihonlaridan olingan sertifikatlar
+                {c.footerLabel}
               </span>
             </div>
           </div>

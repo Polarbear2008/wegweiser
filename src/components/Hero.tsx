@@ -1,8 +1,59 @@
 import { useRef, useState, useEffect } from 'react'
 import { Sparkles, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
+
+const content: Record<Lang, {
+  badge: string
+  headingBefore: string
+  headingAccent: string
+  headingAfter: string
+  subtitle: string
+  ctaPrimary: string
+  ctaSecondary: string
+}> = {
+  UZ: {
+    badge: "O'qish · Sayohat · Ish",
+    headingBefore: "Nemis tilini o'rganing,",
+    headingAccent: 'yangi imkoniyatlar',
+    headingAfter: 'eshigini oching',
+    subtitle: "O'zbekistondagi eng yetakchi nemis tili markazi bilan xalqaro sertifikatlarni olish, chet elda ta'lim olish va ish topish yo'lidagi ishonchli hamrohingiz.",
+    ctaPrimary: 'Birinchi darsga yozilish',
+    ctaSecondary: "Kurslarni ko'rish",
+  },
+  EN: {
+    badge: 'Study · Travel · Work',
+    headingBefore: 'Learn German,',
+    headingAccent: 'open doors',
+    headingAfter: 'to new opportunities',
+    subtitle: "Your trusted partner on the journey to international certificates, studying abroad, and finding employment — with Uzbekistan's leading German language center.",
+    ctaPrimary: 'Enroll in first class',
+    ctaSecondary: 'View courses',
+  },
+  RU: {
+    badge: 'Учёба · Путешествия · Работа',
+    headingBefore: 'Изучайте немецкий,',
+    headingAccent: 'откройте двери',
+    headingAfter: 'к новым возможностям',
+    subtitle: 'Ваш надёжный партнёр на пути к международным сертификатам, обучению за рубежом и трудоустройству — с ведущим центром немецкого языка в Узбекистане.',
+    ctaPrimary: 'Записаться на первый урок',
+    ctaSecondary: 'Смотреть курсы',
+  },
+  DE: {
+    badge: 'Studieren · Reisen · Arbeiten',
+    headingBefore: 'Deutsch lernen,',
+    headingAccent: 'neue Türen',
+    headingAfter: 'öffnen',
+    subtitle: 'Ihr zuverlässiger Partner auf dem Weg zu internationalen Zertifikaten, Auslandsstudium und Karriere — mit dem führenden Deutschzentrum in Usbekistan.',
+    ctaPrimary: 'Zum ersten Kurs anmelden',
+    ctaSecondary: 'Kurse ansehen',
+  },
+}
 
 export default function Hero() {
+  const { lang } = useLang()
+  const c = content[lang]
   const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -83,7 +134,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      aria-label="Hero section"
+      aria-label={c.subtitle}
       className="relative w-full pt-32 pb-20 overflow-hidden"
       style={{ background: 'var(--color-background)' }}
     >
@@ -125,7 +176,7 @@ export default function Hero() {
               }}
             >
               <Sparkles className="h-3 w-3" />
-              <span>Studieren · Reisen · Arbeiten</span>
+              <span>{c.badge}</span>
             </div>
           </motion.div>
 
@@ -142,7 +193,7 @@ export default function Hero() {
               margin: '0 auto',
             }}
           >
-            Nemis tilini o'rganing,{' '}
+            {c.headingBefore}{' '}
             <span
               className="relative inline-block"
               style={{
@@ -152,9 +203,9 @@ export default function Hero() {
                 backgroundClip: 'text',
               }}
             >
-              yangi imkoniyatlar
+              {c.headingAccent}
             </span>{' '}
-            eshigini oching
+            {c.headingAfter}
           </motion.h1>
 
           {/* Subtitle */}
@@ -169,8 +220,7 @@ export default function Hero() {
               lineHeight: '1.6',
             }}
           >
-            O'zbekistondagi eng yetakchi nemis tili markazi bilan xalqaro sertifikatlarni olish,
-            chet elda ta'lim olish va ish topish yo'lidagi ishonchli hamrohingiz.
+            {c.subtitle}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -189,7 +239,7 @@ export default function Hero() {
                 boxShadow: '0 4px 14px 0 rgba(16, 110, 251, 0.35)',
               }}
             >
-              Birinchi darsga yozilish
+              {c.ctaPrimary}
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.03, backgroundColor: 'rgba(0,0,0,0.03)' }}
@@ -202,7 +252,7 @@ export default function Hero() {
                 border: '1px solid rgba(0, 6, 18, 0.1)',
               }}
             >
-              Kurslarni ko'rish
+              {c.ctaSecondary}
             </motion.button>
           </motion.div>
         </div>

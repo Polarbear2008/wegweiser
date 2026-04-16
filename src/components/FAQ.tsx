@@ -1,29 +1,151 @@
 import { useState, useRef } from 'react'
 import { Plus, HelpCircle } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
 
-const faqs = [
-  {
-    question: "Nemis tilini bilmay, Wegweiser-ga kela olamanmi?",
-    answer: "Ha, albatta! Yangi talabalarimiz uchun test sinovlari o'tkazamiz. Uning natijalariga ko'ra mutaxassislarimiz talabalarni guruhlarga ajratishadi.",
+const faqsByLang: Record<Lang, Array<{ question: string; answer: string }>> = {
+  UZ: [
+    {
+      question: "Nemis tilini bilmay, Wegweiser-ga kela olamanmi?",
+      answer: "Ha, albatta! Yangi talabalarimiz uchun test sinovlari o'tkazamiz. Uning natijalariga ko'ra mutaxassislarimiz talabalarni guruhlarga ajratishadi.",
+    },
+    {
+      question: "Nemis tili kurslariga necha yoshdan ariza topshirish mumkin?",
+      answer: "Minimal yosh - 13. Shu bilan birga, barcha voyaga yetmaganlar uchun ularning ota-onalari yoki vasiylar to'g'risida ma'lumot taqdim etilishi shart.",
+    },
+    {
+      question: "Onlayn o'rganish ham mumkinmi yoki faqat offline?",
+      answer: "Ikkalasi ham! Intensive 3-oylik kurs klassik; Standard 6-oylik gibrid (onlayn + offline); Foundation 9-oylik o'zaro onlayn. O'z jadvalingizga moslab tanlang.",
+    },
+    {
+      question: "O'quvchilarni kerakli adabiyotlar bilan taminlaysizlarmi?",
+      answer: "Tanlangan nemis tili kursi uchun haq to'lagandan so'ng, markazimiz talabalarga barcha qo'llanmalar va boshqa o'quv materiallarini taqdim etadi.",
+    },
+    {
+      question: "Bepul xizmatlardan qanday foydalanish mumkin?",
+      answer: "Bepul sinov darsiga barcha xohlovchilar qatnashishlari mumkin. Buning uchun mazkur sahifaning yuqori qismidagi formadan foydalangan holda ro'yxatdan o'tish kifoya.",
+    },
+  ],
+  EN: [
+    {
+      question: "Can I come to Wegweiser without knowing any German?",
+      answer: "Absolutely! We conduct placement tests for new students. Based on the results, our specialists assign students to the appropriate groups.",
+    },
+    {
+      question: "What is the minimum age to apply for German courses?",
+      answer: "The minimum age is 13. For all minors, information about their parents or guardians must be provided.",
+    },
+    {
+      question: "Is online learning available or only in-person?",
+      answer: "Both! The 3-month Intensive course is in-person; the 6-month Standard is hybrid (online + offline); the 9-month Foundation is fully online. Choose what fits your schedule.",
+    },
+    {
+      question: "Do you provide learning materials for students?",
+      answer: "After paying for the chosen German course, our center provides students with all textbooks and other learning materials.",
+    },
+    {
+      question: "How can I use the free services?",
+      answer: "Anyone can attend a free trial lesson. Simply register through the form at the top of this page.",
+    },
+  ],
+  RU: [
+    {
+      question: "Могу ли я прийти в Wegweiser без знания немецкого?",
+      answer: "Конечно! Мы проводим тестирование для новых студентов. По результатам наши специалисты распределяют студентов по группам.",
+    },
+    {
+      question: "С какого возраста можно подать заявку на курсы?",
+      answer: "Минимальный возраст — 13 лет. Для всех несовершеннолетних необходимо предоставить информацию о родителях или опекунах.",
+    },
+    {
+      question: "Доступно ли онлайн-обучение или только очное?",
+      answer: "Оба варианта! 3-месячный Интенсив — очный; 6-месячный Стандарт — гибрид (онлайн + офлайн); 9-месячный Foundation — полностью онлайн.",
+    },
+    {
+      question: "Предоставляете ли вы учебные материалы?",
+      answer: "После оплаты выбранного курса наш центр предоставляет студентам все учебники и другие учебные материалы.",
+    },
+    {
+      question: "Как воспользоваться бесплатными услугами?",
+      answer: "Все желающие могут посетить бесплатный пробный урок. Для этого достаточно зарегистрироваться через форму вверху этой страницы.",
+    },
+  ],
+  DE: [
+    {
+      question: "Kann ich zu Wegweiser kommen, ohne Deutsch zu können?",
+      answer: "Natürlich! Wir führen Einstufungstests für neue Schüler durch. Anhand der Ergebnisse teilen unsere Experten die Schüler in passende Gruppen ein.",
+    },
+    {
+      question: "Ab welchem Alter kann man sich für Deutschkurse anmelden?",
+      answer: "Das Mindestalter beträgt 13 Jahre. Für alle Minderjährigen müssen Informationen über Eltern oder Erziehungsberechtigte vorgelegt werden.",
+    },
+    {
+      question: "Gibt es Online-Unterricht oder nur Präsenzunterricht?",
+      answer: "Beides! Der 3-monatige Intensivkurs ist Präsenz; der 6-monatige Standard ist hybrid (online + Präsenz); der 9-monatige Foundation ist komplett online.",
+    },
+    {
+      question: "Stellen Sie Lernmaterialien zur Verfügung?",
+      answer: "Nach der Bezahlung des gewählten Kurses stellen wir allen Schülern sämtliche Lehrbücher und Lernmaterialien zur Verfügung.",
+    },
+    {
+      question: "Wie kann ich die kostenlosen Angebote nutzen?",
+      answer: "Jeder kann an einer kostenlosen Probestunde teilnehmen. Melden Sie sich einfach über das Formular oben auf dieser Seite an.",
+    },
+  ],
+}
+
+const headerByLang: Record<Lang, {
+  badge: string
+  heading: string
+  description: string
+  helpTitle: string
+  helpDescription: string
+  helpLink: string
+  imageCaption: string
+  imageAlt: string
+}> = {
+  UZ: {
+    badge: 'YORDAM MARKAZI',
+    heading: "Tez-tez so'raladigan savollar",
+    description: "Sizda tug'ilishi mumkin bo'lgan savollarga javob oling. Agar savolingiz bo'lsa, mutaxassislarimiz bilan bog'laning.",
+    helpTitle: 'Yordam kerakmi?',
+    helpDescription: "Bizning professional jamoamiz har qanday savolingizga javob berishga tayyor.",
+    helpLink: "Biz bilan bog'lanish",
+    imageCaption: 'Sizning muvaffaqiyatingiz — bizning maqsadimiz.',
+    imageAlt: 'Wegweiser savollarga javoblar',
   },
-  {
-    question: "Nemis tili kurslariga necha yoshdan ariza topshirish mumkin?",
-    answer: "Minimal yosh - 13. Shu bilan birga, barcha voyaga yetmaganlar uchun ularning ota-onalari yoki vasiylar to'g'risida ma'lumot taqdim etilishi shart.",
+  EN: {
+    badge: 'HELP CENTER',
+    heading: 'Frequently asked questions',
+    description: 'Get answers to common questions. If you have more, contact our specialists.',
+    helpTitle: 'Need help?',
+    helpDescription: 'Our professional team is ready to answer any of your questions.',
+    helpLink: 'Contact us',
+    imageCaption: 'Your success is our mission.',
+    imageAlt: 'Wegweiser FAQ',
   },
-  {
-    question: "Onlayn o'rganish ham mumkinmi yoki faqat offline?",
-    answer: "Ikkalasi ham! Intensive 3-oylik kurs klassik; Standard 6-oylik gibrid (onlayn + offline); Foundation 9-oylik o'zaro onlayn. O'z jadvalingizga moslab tanlang.",
+  RU: {
+    badge: 'ЦЕНТР ПОМОЩИ',
+    heading: 'Часто задаваемые вопросы',
+    description: 'Получите ответы на распространённые вопросы. Если у вас остались вопросы, свяжитесь с нашими специалистами.',
+    helpTitle: 'Нужна помощь?',
+    helpDescription: 'Наша профессиональная команда готова ответить на любой ваш вопрос.',
+    helpLink: 'Связаться с нами',
+    imageCaption: 'Ваш успех — наша миссия.',
+    imageAlt: 'FAQ Wegweiser',
   },
-  {
-    question: "O'quvchilarni kerakli adabiyotlar bilan taminlaysizlarmi?",
-    answer: "Tanlangan nemis tili kursi uchun haq to'lagandan so'ng, markazimiz talabalarga barcha qo'llanmalar va boshqa o'quv materiallarini taqdim etadi.",
+  DE: {
+    badge: 'HILFEZENTRUM',
+    heading: 'Häufig gestellte Fragen',
+    description: 'Finden Sie Antworten auf häufige Fragen. Bei weiteren Fragen kontaktieren Sie unsere Experten.',
+    helpTitle: 'Hilfe nötig?',
+    helpDescription: 'Unser professionelles Team beantwortet gerne alle Ihre Fragen.',
+    helpLink: 'Kontaktieren Sie uns',
+    imageCaption: 'Ihr Erfolg ist unsere Mission.',
+    imageAlt: 'Wegweiser FAQ',
   },
-  {
-    question: "Bepul xizmatlardan qanday foydalanish mumkin?",
-    answer: "Bepul sinov darsiga barcha xohlovchilar qatnashishlari mumkin. Buning uchun mazkur sahifaning yuqori qismidagi formadan foydalangan holda ro'yxatdan o'tish kifoya.",
-  },
-]
+}
 
 const containerVariants: any = {
   hidden: { opacity: 0 },
@@ -47,6 +169,9 @@ const itemVariants: any = {
 }
 
 export default function FAQ() {
+  const { lang } = useLang()
+  const faqs = faqsByLang[lang]
+  const h = headerByLang[lang]
   const [openIndex, setOpenIndex] = useState<number | null>(0)
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -56,7 +181,7 @@ export default function FAQ() {
       id="faq"
       className="relative py-24 w-full overflow-hidden"
       style={{ background: 'var(--color-background)' }}
-      aria-label="FAQ section"
+      aria-label={h.heading}
     >
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-full h-full pointer-events-none opacity-5"
@@ -75,7 +200,7 @@ export default function FAQ() {
             <motion.div variants={itemVariants}>
               <div className="badge-pill">
                 <HelpCircle className="h-3.5 w-3.5" />
-                <span>YORDAM MARKAZI</span>
+                <span>{h.badge}</span>
               </div>
             </motion.div>
             <motion.h2
@@ -88,7 +213,7 @@ export default function FAQ() {
                 lineHeight: '1.05',
               }}
             >
-              Tez-tez so'raladigan savollar
+              {h.heading}
             </motion.h2>
             <motion.p
               variants={itemVariants}
@@ -99,8 +224,7 @@ export default function FAQ() {
                 lineHeight: '1.7' 
               }}
             >
-              Sizda tug'ilishi mumkin bo'lgan savollarga javob oling. 
-              Agar savolingiz bo'lsa, mutaxassislarimiz bilan bog'laning.
+              {h.description}
             </motion.p>
           </div>
         </motion.div>
@@ -117,21 +241,21 @@ export default function FAQ() {
             <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden group shadow-2xl">
               <img
                 src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=800&q=80"
-                alt="Wegweiser FAQ"
+                alt={h.imageAlt}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#106EFB]/40 to-transparent" />
               <div className="absolute bottom-8 left-8 right-8">
                 <p className="text-white font-bold text-lg leading-tight">
-                  Sizning muvaffaqiyatingiz — bizning maqsadimiz.
+                  {h.imageCaption}
                 </p>
               </div>
             </div>
             
             <div className="flex flex-col gap-4 p-8 rounded-[2rem] bg-gray-50 border border-gray-100">
-              <h4 className="font-bold text-gray-900">Yordam kerakmi?</h4>
+              <h4 className="font-bold text-gray-900">{h.helpTitle}</h4>
               <p className="text-sm text-gray-500 leading-relaxed">
-                Bizning professional jamoamiz har qanday savolingizga javob berishga tayyor.
+                {h.helpDescription}
               </p>
               <button 
                 onClick={() => {
@@ -140,7 +264,7 @@ export default function FAQ() {
                 }}
                 className="mt-2 text-[#106EFB] font-bold text-sm flex items-center gap-2 hover:underline"
               >
-                Biz bilan bog'lanish <Plus className="h-4 w-4" />
+                {h.helpLink} <Plus className="h-4 w-4" />
               </button>
             </div>
           </motion.div>

@@ -2,6 +2,8 @@ import { useRef } from 'react'
 import { Medal, ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Link } from '@tanstack/react-router'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
 
 const teachers = [
   {
@@ -76,6 +78,38 @@ const teachers = [
   },
 ]
 
+const content: Record<Lang, {
+  badge: string
+  heading: string
+  description: string
+  viewAll: string
+}> = {
+  UZ: {
+    badge: "MUTAXASSIS O'QITUVCHILAR",
+    heading: 'Bilim beruvchi eng yaxshi jamoa',
+    description: "Wegweiser-dagi har bir o'qituvchi Goethe-Institut sertifikatiga ega bo'lib, talabalarga nemis tilini eng samarali usullarda o'rgatadi.",
+    viewAll: "Hammasini ko'rish",
+  },
+  EN: {
+    badge: 'EXPERT TEACHERS',
+    heading: 'The best team delivering knowledge',
+    description: 'Every teacher at Wegweiser holds a Goethe-Institut certificate and teaches German using the most effective methods.',
+    viewAll: 'View all',
+  },
+  RU: {
+    badge: 'КВАЛИФИЦИРОВАННЫЕ ПРЕПОДАВАТЕЛИ',
+    heading: 'Лучшая команда преподавателей',
+    description: 'Каждый преподаватель Wegweiser имеет сертификат Goethe-Institut и обучает немецкому языку самыми эффективными методами.',
+    viewAll: 'Показать всех',
+  },
+  DE: {
+    badge: 'QUALIFIZIERTE LEHRKRÄFTE',
+    heading: 'Das beste Team für Ihren Lernerfolg',
+    description: 'Jede Lehrkraft bei Wegweiser besitzt ein Goethe-Institut-Zertifikat und unterrichtet Deutsch mit den effektivsten Methoden.',
+    viewAll: 'Alle anzeigen',
+  },
+}
+
 const containerVariants: any = {
   hidden: { opacity: 0 },
   visible: {
@@ -98,6 +132,8 @@ const itemVariants: any = {
 }
 
 export default function Teachers({ limit = 100 }: { limit?: number }) {
+  const { lang } = useLang()
+  const c = content[lang]
   const sectionRef = useRef<HTMLElement>(null)
   
   const displayedTeachers = teachers.slice(0, limit)
@@ -114,7 +150,7 @@ export default function Teachers({ limit = 100 }: { limit?: number }) {
       id="teachers"
       className="relative py-24 w-full overflow-hidden"
       style={{ background: 'var(--color-background)' }}
-      aria-label="Teachers section"
+      aria-label={c.heading}
     >
       <div className="w-content mx-auto flex flex-col gap-16 relative z-10">
         {/* Header */}
@@ -129,7 +165,7 @@ export default function Teachers({ limit = 100 }: { limit?: number }) {
             <motion.div variants={itemVariants}>
               <div className="badge-pill">
                 <Medal className="h-3.5 w-3.5" />
-                <span>MUTAXASSIS O'QITUVCHILAR</span>
+                <span>{c.badge}</span>
               </div>
             </motion.div>
             <motion.h2
@@ -142,7 +178,7 @@ export default function Teachers({ limit = 100 }: { limit?: number }) {
                 lineHeight: '1.05',
               }}
             >
-              Bilim beruvchi eng yaxshi jamoa
+              {c.heading}
             </motion.h2>
             <motion.p
               variants={itemVariants}
@@ -153,28 +189,27 @@ export default function Teachers({ limit = 100 }: { limit?: number }) {
                 lineHeight: '1.7' 
               }}
             >
-              Wegweiser-dagi har bir o'qituvchi Goethe-Institut sertifikatiga ega bo'lib, 
-              talabalarga nemis tilini eng samarali usullarda o'rgatadi.
+              {c.description}
             </motion.p>
           </div>
 
           <motion.div variants={itemVariants}>
             {isTruncated ? (
                <Link
-               to="/teachers"
-               className="group h-14 px-8 rounded-2xl bg-primary text-white font-bold text-[15px] flex items-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/20"
-               style={{ background: '#106EFB' }}
-             >
-               Hammasini ko'rish
-               <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-             </Link>
+                to="/teachers"
+                className="group h-14 px-8 rounded-2xl bg-primary text-white font-bold text-[15px] flex items-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/20"
+                style={{ background: '#106EFB' }}
+              >
+                {c.viewAll}
+                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
             ) : (
                 <button
                 onClick={() => scrollTo('contact')}
                 className="group h-14 px-8 rounded-2xl bg-primary text-white font-bold text-[15px] flex items-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/20"
                 style={{ background: '#106EFB' }}
               >
-                Hammasini ko'rish
+                {c.viewAll}
                 <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             )}

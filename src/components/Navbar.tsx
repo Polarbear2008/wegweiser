@@ -1,25 +1,65 @@
 import { useState, useEffect, useRef } from 'react'
-import { Plus, ArrowRight } from 'lucide-react'
+import { Plus, ArrowRight, Globe } from 'lucide-react'
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 import { Link, useNavigate, useLocation } from '@tanstack/react-router'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
+import { LANGUAGES } from '../i18n/languages'
 
-const navItems = [
-  { label: 'Kurslar', href: 'courses' },
-  { label: 'Biz haqida', href: 'about' },
-  { label: "O'qituvchilar", href: 'teachers', isPage: true },
-  { label: 'Muvaffaqiyyatlar', href: 'testimonials' },
-  { label: 'Qiymatlar', href: 'pricing' },
-  { label: 'FAQ', href: 'faq' },
-  { label: 'Aloqa', href: 'contact' },
-]
+const navItemsByLang: Record<Lang, Array<{ label: string; href: string; isPage?: boolean }>> = {
+  UZ: [
+    { label: 'Kurslar', href: 'courses' },
+    { label: "O'qituvchilar", href: 'teachers', isPage: true },
+    { label: 'Biz haqimizda', href: 'about' },
+    { label: 'FAQ', href: 'faq' },
+  ],
+  EN: [
+    { label: 'Courses', href: 'courses' },
+    { label: 'Teachers', href: 'teachers', isPage: true },
+    { label: 'About us', href: 'about' },
+    { label: 'FAQ', href: 'faq' },
+  ],
+  RU: [
+    { label: 'Курсы', href: 'courses' },
+    { label: 'Преподаватели', href: 'teachers', isPage: true },
+    { label: 'О нас', href: 'about' },
+    { label: 'FAQ', href: 'faq' },
+  ],
+  DE: [
+    { label: 'Kurse', href: 'courses' },
+    { label: 'Lehrkräfte', href: 'teachers', isPage: true },
+    { label: 'Über uns', href: 'about' },
+    { label: 'FAQ', href: 'faq' },
+  ],
+}
+
+const ctaByLang: Record<Lang, string> = {
+  UZ: 'Boshlash',
+  EN: 'Get started',
+  RU: 'Начать',
+  DE: 'Loslegen',
+}
+
+const toggleMenuAriaByLang: Record<Lang, string> = {
+  UZ: 'Menyu-ni ochish va yopish',
+  EN: 'Toggle menu',
+  RU: 'Переключить меню',
+  DE: 'Menü ein/aus',
+}
 
 export default function Navbar() {
+  const { lang, setLang } = useLang()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [langMenuOpen, setLangMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const langMenuRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const location = useLocation()
-  
+
+  const navItems = navItemsByLang[lang]
+  const ctaText = ctaByLang[lang]
+
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -35,7 +75,7 @@ export default function Navbar() {
 
   function handleNav(item: typeof navItems[0]) {
     setMenuOpen(false)
-    
+
     if (item.isPage) {
       navigate({ to: '/teachers' })
       return
@@ -66,10 +106,13 @@ export default function Navbar() {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setMenuOpen(false)
       }
+      if (langMenuRef.current && !langMenuRef.current.contains(e.target as Node)) {
+        setLangMenuOpen(false)
+      }
     }
-    if (menuOpen) document.addEventListener('mousedown', handleClick)
+    if (menuOpen || langMenuOpen) document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
-  }, [menuOpen])
+  }, [menuOpen, langMenuOpen])
 
   return (
     <>
@@ -102,9 +145,9 @@ export default function Navbar() {
             className="cursor-pointer group flex items-center gap-2"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            <img 
-              src="/logo.svg" 
-              alt="Wegweiser Logo" 
+            <img
+              src="/logo.svg"
+              alt="Wegweiser Logo"
               className="h-8 md:h-12 w-auto object-contain transition-transform duration-300"
             />
           </Link>
@@ -116,16 +159,57 @@ export default function Navbar() {
                 key={item.href}
                 whileHover={{ backgroundColor: 'rgba(16, 110, 251, 0.06)', color: 'var(--color-foreground)' }}
                 className="relative px-4 py-2 text-[13px] font-medium rounded-full transition-all duration-200"
-                style={{ 
-                  color: (location.pathname === '/teachers' && item.isPage) || (location.pathname === '/' && !item.isPage) 
-                    ? 'var(--color-foreground)' 
-                    : 'rgba(0, 6, 18, 0.65)' 
+                style={{
+                  color: (location.pathname === '/teachers' && item.isPage) || (location.pathname === '/' && !item.isPage)
+                    ? 'var(--color-foreground)'
+                    : 'rgba(0, 6, 18, 0.65)'
                 }}
                 onClick={() => handleNav(item)}
               >
                 {item.label}
               </motion.button>
             ))}
+
+            <div className="w-px h-4 bg-black/10 mx-2" />
+
+            <div className="relative" ref={langMenuRef}>
+              <motion.button
+                onClick={() => setLangMenuOpen(!langMenuOpen)}
+                whileHover={{ backgroundColor: 'rgba(16, 110, 251, 0.08)', color: '#106EFB' }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[13px] font-medium transition-colors cursor-pointer"
+                style={{ color: 'rgba(0, 6, 18, 0.7)' }}
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span className="font-bold">{lang}</span>
+              </motion.button>
+
+              <AnimatePresence>
+                {langMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-10 left-1/2 -translate-x-1/2 flex flex-col bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] border border-black/5 overflow-hidden w-20 py-1.5 z-50"
+                  >
+                    {LANGUAGES.map((l) => (
+                      <button
+                        key={l}
+                        onClick={() => {
+                          setLang(l);
+                          setLangMenuOpen(false);
+                        }}
+                        className={`px-4 py-2 text-[13px] font-semibold transition-colors hover:bg-black/5 text-center ${lang === l ? 'text-[#106EFB]' : 'text-black/70'}`}
+                      >
+                        {l}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* CTA in navbar */}
             <motion.button
               whileHover={{ scale: 1.03, boxShadow: '0 4px 15px rgba(16, 110, 251, 0.3)' }}
@@ -136,9 +220,9 @@ export default function Navbar() {
                 color: 'var(--color-primary-cta-text)',
                 boxShadow: '0 2px 8px rgba(16, 110, 251, 0.2)',
               }}
-              onClick={() => handleNav({ label: 'Aloqa', href: 'contact' })}
+              onClick={() => handleNav({ label: 'Contact', href: 'contact' })}
             >
-              Boshlash
+              {ctaText}
             </motion.button>
           </div>
 
@@ -151,7 +235,7 @@ export default function Navbar() {
               color: 'var(--color-primary-cta-text)',
             }}
             onClick={() => setMenuOpen((v) => !v)}
-            aria-label="Toggle menu"
+            aria-label={toggleMenuAriaByLang[lang]}
           >
             <motion.div
               animate={{ rotate: menuOpen ? 45 : 0 }}
@@ -202,6 +286,22 @@ export default function Navbar() {
                     <div className="w-full h-px mx-3" style={{ background: 'rgba(0, 0, 0, 0.04)' }} />
                   )}
                 </motion.div>
+              ))}
+            </div>
+
+            {/* Mobile Language Picker */}
+            <div className="flex gap-2 justify-center pt-2 border-t border-black/5">
+              {LANGUAGES.map((l) => (
+                <button
+                  key={l}
+                  onClick={() => {
+                    setLang(l)
+                    setMenuOpen(false)
+                  }}
+                  className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all ${lang === l ? 'bg-[#106EFB] text-white' : 'bg-black/5 text-black/60 hover:bg-black/10'}`}
+                >
+                  {l}
+                </button>
               ))}
             </div>
           </motion.div>

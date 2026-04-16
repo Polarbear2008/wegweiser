@@ -1,54 +1,250 @@
 import { useState, useRef } from 'react'
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
 
-const testimonials = [
-  {
-    name: 'Boltayeva Lola',
-    role: 'DSD II Sertifikat',
-    result: 'Goethe B2',
-    initials: 'BL',
-    color: 'linear-gradient(135deg, #106EFB 0%, #60A5FA 100%)',
-    rating: 5,
-    text: "Assalomu alaykum, men Wegweiser o'quv markazida 3 oy davomida nemis tili kursini o'qib, DSD II sertifikatini qo'lga kiritdim. Buning uchun ustozlarim Miss Indira va Mr. Sardorga minnatdorchilik bildiraman."
+const testimonialsByLang: Record<Lang, Array<{
+  name: string
+  role: string
+  result: string
+  initials: string
+  color: string
+  rating: number
+  text: string
+}>> = {
+  UZ: [
+    {
+      name: 'Boltayeva Lola',
+      role: 'DSD II Sertifikat',
+      result: 'Goethe B2',
+      initials: 'BL',
+      color: 'linear-gradient(135deg, #106EFB 0%, #60A5FA 100%)',
+      rating: 5,
+      text: "Assalomu alaykum, men Wegweiser o'quv markazida 3 oy davomida nemis tili kursini o'qib, DSD II sertifikatini qo'lga kiritdim. Buning uchun ustozlarim Miss Indira va Mr. Sardorga minnatdorchilik bildiraman."
+    },
+    {
+      name: 'Oltiboev Asilbek',
+      role: 'TestDaF TDN 5',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'OA',
+      color: 'linear-gradient(135deg, #0047AB 0%, #106EFB 100%)',
+      rating: 5,
+      text: "Assalomu aleykum! Wegweiser'da 3 oy davomida o'qib, men Goethe-Zertifikat C1 darajasiga erishdim. Bu natijaga eng katta hissa qo'shgan shaxs mening o'qituvchim Ms. Sandra edi. Uning individual yondashuvi, nafaqat qat'iyatligi, balki mehnatsevarlikni namuna orqali ko'rsatishi meni bu natijaga yetkazdi."
+    },
+    {
+      name: 'Odilov Elyor',
+      role: 'Goethe C1',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'OE',
+      color: 'linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%)',
+      rating: 5,
+      text: "Wegweiser o'quv markazi menda juda katta taassurot qoldirdi. Uch oy davomida bu yerda o'qish orqali men Goethe-Zertifikat C1 darajasiga erishdim. Bu muvaffaqiyatda eng katta hissa Mr. Sardorga tegishli. Uning saboqlari juda samarali va qiziqarli bo'lib, u har bir o'quvchining ehtiyojlarini inobatga olib o'qitishni biladi."
+    },
+    {
+      name: 'Safarova Oysha',
+      role: 'DSD II Sertifikat',
+      result: 'DSD II',
+      initials: 'SO',
+      color: 'linear-gradient(135deg, #106EFB 0%, #00D2FF 100%)',
+      rating: 5,
+      text: "O'qituvchim Mr. Akhmadkhon, men ko'rgan eng fidoyi o'qituvchilardan biri, va mening yutug'imga juda katta hissa qo'shgan. Uning puxta rejalashtirilgan darslari, Goethe imtihoni talablariga to'g'ridan-to'g'ri mos keladigan tuzilmalari va bizga bo'lgan o'qitishga bo'lgan ishtiyoqi meni bu muvaffaqiyatga yetakladi."
+    },
+    {
+      name: 'Yuldoshev Firdavs',
+      role: 'Goethe C1',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'YF',
+      color: 'linear-gradient(135deg, #0F172A 0%, #106EFB 100%)',
+      rating: 5,
+      text: "Shaxsan menimcha, Wegweiser O'zbekistondagi eng yaxshi o'quv markazlaridan biri, agar yagona bo'lmasa. Ko'pgina o'qituvchilar o'z ishiga sodiq va dars davomida talabalarning diqqatini turli interaktiv faoliyatlar bilan jalb qilishni biladi. Muhiti zerikarli emas, maxsus ishlab chiqilgan."
+    },
+  ],
+  EN: [
+    {
+      name: 'Boltayeva Lola',
+      role: 'DSD II Certificate',
+      result: 'Goethe B2',
+      initials: 'BL',
+      color: 'linear-gradient(135deg, #106EFB 0%, #60A5FA 100%)',
+      rating: 5,
+      text: "I studied at Wegweiser for 3 months and obtained my DSD II certificate. I'm deeply grateful to my teachers Miss Indira and Mr. Sardor for their guidance."
+    },
+    {
+      name: 'Oltiboev Asilbek',
+      role: 'TestDaF TDN 5',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'OA',
+      color: 'linear-gradient(135deg, #0047AB 0%, #106EFB 100%)',
+      rating: 5,
+      text: "After studying at Wegweiser for 3 months, I achieved the Goethe-Zertifikat C1 level. The person who contributed most to this result was my teacher Ms. Sandra. Her individual approach and dedication led me to this achievement."
+    },
+    {
+      name: 'Odilov Elyor',
+      role: 'Goethe C1',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'OE',
+      color: 'linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%)',
+      rating: 5,
+      text: "Wegweiser left a tremendous impression on me. Through three months of studying here, I achieved the Goethe-Zertifikat C1 level. Mr. Sardor's lessons were extremely effective and engaging — he knows how to teach according to each student's needs."
+    },
+    {
+      name: 'Safarova Oysha',
+      role: 'DSD II Certificate',
+      result: 'DSD II',
+      initials: 'SO',
+      color: 'linear-gradient(135deg, #106EFB 0%, #00D2FF 100%)',
+      rating: 5,
+      text: "My teacher Mr. Akhmadkhon is one of the most dedicated teachers I've ever seen. His well-planned lessons, structures directly matching Goethe exam requirements, and passion for teaching led me to this success."
+    },
+    {
+      name: 'Yuldoshev Firdavs',
+      role: 'Goethe C1',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'YF',
+      color: 'linear-gradient(135deg, #0F172A 0%, #106EFB 100%)',
+      rating: 5,
+      text: "Personally, I believe Wegweiser is one of the best learning centers in Uzbekistan, if not the best. Many teachers are devoted to their work and know how to engage students through various interactive activities. The environment is specially designed, not boring."
+    },
+  ],
+  RU: [
+    {
+      name: 'Болтаева Лола',
+      role: 'Сертификат DSD II',
+      result: 'Goethe B2',
+      initials: 'БЛ',
+      color: 'linear-gradient(135deg, #106EFB 0%, #60A5FA 100%)',
+      rating: 5,
+      text: "Я проучилась в Wegweiser 3 месяца и получила сертификат DSD II. Выражаю глубокую благодарность моим преподавателям Miss Индире и Mr. Сардору."
+    },
+    {
+      name: 'Олтибоев Асилбек',
+      role: 'TestDaF TDN 5',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'ОА',
+      color: 'linear-gradient(135deg, #0047AB 0%, #106EFB 100%)',
+      rating: 5,
+      text: "Проучившись в Wegweiser 3 месяца, я достиг уровня Goethe-Zertifikat C1. Наибольший вклад в этот результат внесла мой преподаватель Ms. Сандра. Её индивидуальный подход и преданность делу привели меня к этому достижению."
+    },
+    {
+      name: 'Одилов Элёр',
+      role: 'Goethe C1',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'ОЭ',
+      color: 'linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%)',
+      rating: 5,
+      text: "Wegweiser произвёл на меня огромное впечатление. За три месяца обучения я достиг уровня Goethe-Zertifikat C1. Уроки Mr. Сардора были невероятно эффективны — он учитывает потребности каждого ученика."
+    },
+    {
+      name: 'Сафарова Ойша',
+      role: 'Сертификат DSD II',
+      result: 'DSD II',
+      initials: 'СО',
+      color: 'linear-gradient(135deg, #106EFB 0%, #00D2FF 100%)',
+      rating: 5,
+      text: "Мой преподаватель Mr. Ахмадхон — один из самых преданных учителей, которых я встречала. Его тщательно спланированные уроки и страсть к преподаванию привели меня к этому успеху."
+    },
+    {
+      name: 'Юлдошев Фирдавс',
+      role: 'Goethe C1',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'ЮФ',
+      color: 'linear-gradient(135deg, #0F172A 0%, #106EFB 100%)',
+      rating: 5,
+      text: "Лично я считаю, что Wegweiser — один из лучших учебных центров в Узбекистане. Многие преподаватели преданы своему делу и умеют вовлекать студентов через интерактивные занятия. Атмосфера специально создана для обучения."
+    },
+  ],
+  DE: [
+    {
+      name: 'Boltajewa Lola',
+      role: 'DSD II Zertifikat',
+      result: 'Goethe B2',
+      initials: 'BL',
+      color: 'linear-gradient(135deg, #106EFB 0%, #60A5FA 100%)',
+      rating: 5,
+      text: "Ich habe 3 Monate bei Wegweiser gelernt und mein DSD II-Zertifikat erhalten. Ich bin meinen Lehrern Miss Indira und Mr. Sardor zutiefst dankbar."
+    },
+    {
+      name: 'Oltibojew Asilbek',
+      role: 'TestDaF TDN 5',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'OA',
+      color: 'linear-gradient(135deg, #0047AB 0%, #106EFB 100%)',
+      rating: 5,
+      text: "Nach 3 Monaten Studium bei Wegweiser habe ich das Goethe-Zertifikat C1 erreicht. Den größten Beitrag dazu leistete meine Lehrerin Ms. Sandra. Ihr individueller Ansatz und ihr Engagement führten mich zu diesem Erfolg."
+    },
+    {
+      name: 'Odilow Eljor',
+      role: 'Goethe C1',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'OE',
+      color: 'linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%)',
+      rating: 5,
+      text: "Wegweiser hat mich sehr beeindruckt. Durch drei Monate Studium habe ich das Goethe-Zertifikat C1 erreicht. Mr. Sardors Unterricht war äußerst effektiv — er geht auf die Bedürfnisse jedes Schülers ein."
+    },
+    {
+      name: 'Safarowa Ojscha',
+      role: 'DSD II Zertifikat',
+      result: 'DSD II',
+      initials: 'SO',
+      color: 'linear-gradient(135deg, #106EFB 0%, #00D2FF 100%)',
+      rating: 5,
+      text: "Mein Lehrer Mr. Achmadchon ist einer der engagiertesten Lehrer, die ich je erlebt habe. Seine sorgfältig geplanten Stunden und die Leidenschaft für das Unterrichten haben mich zu diesem Erfolg geführt."
+    },
+    {
+      name: 'Juldoschew Firdaws',
+      role: 'Goethe C1',
+      result: 'Goethe-Zertifikat C1',
+      initials: 'JF',
+      color: 'linear-gradient(135deg, #0F172A 0%, #106EFB 100%)',
+      rating: 5,
+      text: "Meiner Meinung nach ist Wegweiser eines der besten Lernzentren in Usbekistan. Viele Lehrer sind ihrer Arbeit treu und wissen, wie man Schüler durch interaktive Aktivitäten einbindet. Die Atmosphäre ist speziell gestaltet."
+    },
+  ],
+}
+
+const headerByLang: Record<Lang, {
+  badge: string
+  heading: string
+  stats: Array<{ value: string; label: string }>
+}> = {
+  UZ: {
+    badge: 'MUVAFFAQIYAT HIKOYALARI',
+    heading: 'Talabalarimizning sharhlari',
+    stats: [
+      { value: '1,200+', label: "Muvaffaqiyatli bitiruvchilar" },
+      { value: '95%', label: 'Goethe-Institut natijalari' },
+      { value: '8 yil', label: 'Benazir tajriba' },
+    ],
   },
-  {
-    name: 'Oltiboev Asilbek',
-    role: 'TestDaF TDN 5',
-    result: 'Goethe-Zertifikat C1',
-    initials: 'OA',
-    color: 'linear-gradient(135deg, #0047AB 0%, #106EFB 100%)',
-    rating: 5,
-    text: "Assalomu aleykum! Wegweiser'da 3 oy davomida o'qib, men Goethe-Zertifikat C1 darajasiga erishdim. Bu natijaga eng katta hissa qo'shgan shaxs mening o'qituvchim Ms. Sandra edi. Uning individual yondashuvi, nafaqat qat'iyatligi, balki mehnatsevarlikni namuna orqali ko'rsatishi meni bu natijaga yetkazdi."
+  EN: {
+    badge: 'SUCCESS STORIES',
+    heading: 'What our students say',
+    stats: [
+      { value: '1,200+', label: 'Successful graduates' },
+      { value: '95%', label: 'Goethe-Institut results' },
+      { value: '8 yrs', label: 'Unmatched experience' },
+    ],
   },
-  {
-    name: 'Odilov Elyor',
-    role: 'Goethe C1',
-    result: 'Goethe-Zertifikat C1',
-    initials: 'OE',
-    color: 'linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%)',
-    rating: 5,
-    text: "Wegweiser o'quv markazi menda juda katta taassurot qoldirdi. Uch oy davomida bu yerda o'qish orqali men Goethe-Zertifikat C1 darajasiga erishdim. Bu muvaffaqiyatda eng katta hissa Mr. Sardorga tegishli. Uning saboqlari juda samarali va qiziqarli bo'lib, u har bir o'quvchining ehtiyojlarini inobatga olib o'qitishni biladi."
+  RU: {
+    badge: 'ИСТОРИИ УСПЕХА',
+    heading: 'Отзывы наших студентов',
+    stats: [
+      { value: '1 200+', label: 'Успешных выпускников' },
+      { value: '95%', label: 'Результаты Goethe-Institut' },
+      { value: '8 лет', label: 'Бесценный опыт' },
+    ],
   },
-  {
-    name: 'Safarova Oysha',
-    role: 'DSD II Sertifikat',
-    result: 'DSD II',
-    initials: 'SO',
-    color: 'linear-gradient(135deg, #106EFB 0%, #00D2FF 100%)',
-    rating: 5,
-    text: "O'qituvchim Mr. Akhmadkhon, men ko'rgan eng fidoyi o'qituvchilardan biri, va mening yutug'imga juda katta hissa qo'shgan. Uning puxta rejalashtirilgan darslari, Goethe imtihoni talablariga to'g'ridan-to'g'ri mos keladigan tuzilmalari va bizga bo'lgan o'qitishga bo'lgan ishtiyoqi meni bu muvaffaqiyatga yetakladi."
+  DE: {
+    badge: 'ERFOLGSGESCHICHTEN',
+    heading: 'Was unsere Studierenden sagen',
+    stats: [
+      { value: '1.200+', label: 'Erfolgreiche Absolventen' },
+      { value: '95%', label: 'Goethe-Institut-Ergebnisse' },
+      { value: '8 Jahre', label: 'Einzigartige Erfahrung' },
+    ],
   },
-  {
-    name: 'Yuldoshev Firdavs',
-    role: 'Goethe C1',
-    result: 'Goethe-Zertifikat C1',
-    initials: 'YF',
-    color: 'linear-gradient(135deg, #0F172A 0%, #106EFB 100%)',
-    rating: 5,
-    text: "Shaxsan menimcha, Wegweiser O'zbekistondagi eng yaxshi o'quv markazlaridan biri, agar yagona bo'lmasa. Ko'pgina o'qituvchilar o'z ishiga sodiq va dars davomida talabalarning diqqatini turli interaktiv faoliyatlar bilan jalb qilishni biladi. Muhiti zerikarli emas, maxsus ishlab chiqilgan."
-  },
-]
+}
 
 const containerVariants: any = {
   hidden: { opacity: 0 },
@@ -72,6 +268,9 @@ const itemVariants: any = {
 }
 
 export default function Testimonials() {
+  const { lang } = useLang()
+  const testimonials = testimonialsByLang[lang]
+  const header = headerByLang[lang]
   const [activeIndex, setActiveIndex] = useState(0)
   const [direction, setDirection] = useState(0)
   const sectionRef = useRef<HTMLElement>(null)
@@ -112,7 +311,7 @@ export default function Testimonials() {
       id="testimonials"
       className="relative py-24 w-full overflow-hidden"
       style={{ background: 'var(--color-background)' }}
-      aria-label="Testimonials section"
+      aria-label={header.heading}
     >
       {/* Background Decor */}
       <div className="absolute top-1/2 left-0 w-full h-full pointer-events-none opacity-5"
@@ -130,7 +329,7 @@ export default function Testimonials() {
           <motion.div variants={itemVariants}>
             <div className="badge-pill">
               <Star className="h-3.5 w-3.5" />
-              <span>MUVAFFAQIYAT HIKOYALARI</span>
+              <span>{header.badge}</span>
             </div>
           </motion.div>
           <motion.h2
@@ -144,7 +343,7 @@ export default function Testimonials() {
               maxWidth: '800px'
             }}
           >
-            Talabalarimizning sharhlari
+            {header.heading}
           </motion.h2>
         </motion.div>
 
@@ -232,11 +431,7 @@ export default function Testimonials() {
           viewport={{ once: true, margin: "-50px" }}
           className="mt-12 rounded-[2.5rem] bg-gray-50/50 border border-gray-100 p-8 md:p-14 md:py-16 grid grid-cols-1 md:grid-cols-3 gap-12"
         >
-          {[
-            { value: '1,200+', label: "Muvaffaqiyatli bitiruvchilar" },
-            { value: '95%', label: 'Goethe-Institut natijalari' },
-            { value: '8 yil', label: 'Benazir tajriba' },
-          ].map((stat, i) => (
+          {header.stats.map((stat, i) => (
             <div key={i} className="flex flex-col items-center md:items-start gap-3">
               <h4 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tighter">{stat.value}</h4>
               <p className="text-gray-500 font-medium">{stat.label}</p>

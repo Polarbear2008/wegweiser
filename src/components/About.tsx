@@ -1,5 +1,61 @@
 import { motion } from 'framer-motion'
 import { Target } from 'lucide-react'
+import { useLang } from '../i18n/LanguageProvider'
+import type { Lang } from '../i18n/languages'
+
+const content: Record<Lang, {
+  badge: string
+  heading: string
+  description: string
+  stats: Array<{ value: string; label: string }>
+  quote: string
+  quoteAuthor: string
+}> = {
+  UZ: {
+    badge: 'BIZNING MAQSAD',
+    heading: "O'zbekistondagi eng ishonchli nemis tili markazida ta'lim oling",
+    description: "Wegweiser 2020-yildan yildan buyon yoshlarga nemis tilini o'rgatib kelmoqda va hozirga kelib 7 ta filialga ega. Sertifikat olgan o'qituvchilar, zamonaviy o'quv usullari va Goethe-Institut hamkorligida 95% muvaffaqiyyat ko'rsatkichini ta'minlaymiz.",
+    stats: [
+      { value: '95%', label: 'Sertifikat muvaffaqiyati' },
+      { value: '2000+', label: 'Bitiruvchi talabalar' },
+    ],
+    quote: '"Bizning maqsadimiz — har bir talabaning Germaniyadagi orzularini haqiqatga aylantirish."',
+    quoteAuthor: 'Wegweiser Rahbariyati',
+  },
+  EN: {
+    badge: 'OUR MISSION',
+    heading: "Study at Uzbekistan's most trusted German language center",
+    description: "Since 2020, Wegweiser has been teaching young people German and now has 7 branches. With certified teachers, modern teaching methods, and Goethe-Institut partnership, we ensure a 95% success rate.",
+    stats: [
+      { value: '95%', label: 'Certificate success rate' },
+      { value: '2000+', label: 'Graduated students' },
+    ],
+    quote: '"Our mission is to turn every student\'s dreams of Germany into reality."',
+    quoteAuthor: 'Wegweiser Leadership',
+  },
+  RU: {
+    badge: 'НАША МИССИЯ',
+    heading: 'Обучайтесь в самом надёжном центре немецкого языка в Узбекистане',
+    description: 'С 2020 года Wegweiser обучает молодёжь немецкому языку и уже имеет 7 филиалов. Сертифицированные преподаватели, современные методики и партнёрство с Goethe-Institut обеспечивают 95% успешной сдачи экзаменов.',
+    stats: [
+      { value: '95%', label: 'Успешная сдача' },
+      { value: '2000+', label: 'Выпускников' },
+    ],
+    quote: '"Наша цель — воплотить мечту каждого студента о Германии в реальность."',
+    quoteAuthor: 'Руководство Wegweiser',
+  },
+  DE: {
+    badge: 'UNSERE MISSION',
+    heading: 'Lernen Sie am vertrauenswürdigsten Deutschzentrum Usbekistans',
+    description: 'Seit 2020 bringt Wegweiser jungen Menschen Deutsch bei und verfügt mittlerweile über 7 Filialen. Mit zertifizierten Lehrkräften, modernen Unterrichtsmethoden und der Partnerschaft mit dem Goethe-Institut gewährleisten wir eine Erfolgsquote von 95%.',
+    stats: [
+      { value: '95%', label: 'Zertifikatserfolg' },
+      { value: '2000+', label: 'Absolventen' },
+    ],
+    quote: '"Unser Ziel ist es, den Traum jedes Studenten von Deutschland Wirklichkeit werden zu lassen."',
+    quoteAuthor: 'Wegweiser-Leitung',
+  },
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -23,10 +79,13 @@ const itemVariants: any = {
 }
 
 export default function About() {
+  const { lang } = useLang()
+  const c = content[lang]
+
   return (
     <section
       id="about"
-      aria-label="About section"
+      aria-label={c.heading}
       className="relative py-24 w-full dark-section overflow-hidden"
       style={{ background: '#070a11' }}
     >
@@ -49,7 +108,7 @@ export default function About() {
               <motion.div variants={itemVariants}>
                 <div className="badge-pill" style={{ background: 'rgba(255, 255, 255, 0.05)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                   <Target className="h-3.5 w-3.5" />
-                  <span>BIZNING MAQSAD</span>
+                  <span>{c.badge}</span>
                 </div>
               </motion.div>
 
@@ -63,7 +122,7 @@ export default function About() {
                   lineHeight: '1.1',
                 }}
               >
-                O'zbekistondagi eng ishonchli nemis tili markazida ta'lim oling
+                {c.heading}
               </motion.h2>
 
               <motion.p
@@ -75,17 +134,13 @@ export default function About() {
                   lineHeight: '1.7',
                 }}
               >
-                Wegweiser 2020-yildan yildan buyon yoshlarga nemis tilini o'rgatib kelmoqda va hozirga kelib 7 ta filialga ega. Sertifikat olgan o'qituvchilar, zamonaviy o'quv usullari
-                va Goethe-Institut hamkorligida 95% muvaffaqiyyat ko'rsatkichini ta'minlaymiz.
+                {c.description}
               </motion.p>
             </div>
 
             {/* Stats */}
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-              {[
-                { value: '95%', label: 'Sertifikat muvaffaqiyati' },
-                { value: '2000+', label: 'Bitiruvchi talabalar' },
-              ].map((stat) => (
+              {c.stats.map((stat) => (
                 <motion.div
                   key={stat.label}
                   variants={itemVariants}
@@ -135,10 +190,10 @@ export default function About() {
               style={{ background: 'rgba(255, 255, 255, 0.05)' }}
             >
               <p className="text-white font-medium text-sm leading-relaxed">
-                "Bizning maqsadimiz — har bir talabaning Germaniyadagi orzularini haqiqatga aylantirish."
+                {c.quote}
               </p>
               <p className="text-white/40 text-xs mt-3 font-bold uppercase tracking-widest">
-                Wegweiser Rahbariyati
+                {c.quoteAuthor}
               </p>
             </motion.div>
           </motion.div>
