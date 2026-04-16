@@ -4,9 +4,6 @@ import { MessageCircle, Phone, ArrowRight, CheckCircle2, Loader2, AlertCircle } 
 import { useLang } from '../i18n/LanguageProvider'
 import type { Lang } from '../i18n/languages'
 
-const TELEGRAM_BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN
-const TELEGRAM_CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID
-
 async function sendToTelegram(data: {
   name: string
   phone: string
@@ -36,18 +33,14 @@ async function sendToTelegram(data: {
   ].filter((line) => line !== null).join('\n')
 
   try {
-    const res = await fetch(
-      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: message,
-          parse_mode: 'HTML',
-        }),
-      }
-    )
+    const res = await fetch('/api/telegram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: message,
+        parse_mode: 'HTML',
+      }),
+    })
     const json = await res.json()
     return json.ok === true
   } catch {
