@@ -6,28 +6,32 @@ import { useLang } from '../i18n/LanguageProvider'
 import type { Lang } from '../i18n/languages'
 import { LANGUAGES } from '../i18n/languages'
 
-const navItemsByLang: Record<Lang, Array<{ label: string; href: string; isPage?: boolean }>> = {
+const navItemsByLang: Record<Lang, Array<{ label: string; href: string; isPage?: boolean; pagePath?: string }>> = {
   UZ: [
     { label: 'Kurslar', href: 'courses' },
-    { label: "O'qituvchilar", href: 'teachers', isPage: true },
+    { label: "O'qituvchilar", href: 'teachers', isPage: true, pagePath: '/teachers' },
+    { label: 'Placement Test', href: 'placement-test', isPage: true, pagePath: '/placement-test' },
     { label: 'Biz haqimizda', href: 'about' },
     { label: 'FAQ', href: 'faq' },
   ],
   EN: [
     { label: 'Courses', href: 'courses' },
-    { label: 'Teachers', href: 'teachers', isPage: true },
+    { label: 'Teachers', href: 'teachers', isPage: true, pagePath: '/teachers' },
+    { label: 'Placement Test', href: 'placement-test', isPage: true, pagePath: '/placement-test' },
     { label: 'About us', href: 'about' },
     { label: 'FAQ', href: 'faq' },
   ],
   RU: [
     { label: 'Курсы', href: 'courses' },
-    { label: 'Преподаватели', href: 'teachers', isPage: true },
+    { label: 'Преподаватели', href: 'teachers', isPage: true, pagePath: '/teachers' },
+    { label: 'Placement Test', href: 'placement-test', isPage: true, pagePath: '/placement-test' },
     { label: 'О нас', href: 'about' },
     { label: 'FAQ', href: 'faq' },
   ],
   DE: [
     { label: 'Kurse', href: 'courses' },
-    { label: 'Lehrkräfte', href: 'teachers', isPage: true },
+    { label: 'Lehrkräfte', href: 'teachers', isPage: true, pagePath: '/teachers' },
+    { label: 'Placement Test', href: 'placement-test', isPage: true, pagePath: '/placement-test' },
     { label: 'Über uns', href: 'about' },
     { label: 'FAQ', href: 'faq' },
   ],
@@ -83,8 +87,8 @@ export default function Navbar() {
   function handleNav(item: typeof navItems[0]) {
     setMenuOpen(false)
 
-    if (item.isPage) {
-      navigate({ to: '/teachers' })
+    if (item.isPage && item.pagePath) {
+      navigate({ to: item.pagePath })
       return
     }
 

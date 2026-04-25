@@ -3,6 +3,7 @@ import { Sparkles, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion'
 import { useLang } from '../i18n/LanguageProvider'
 import type { Lang } from '../i18n/languages'
+import { useNavigate } from '@tanstack/react-router'
 
 const content: Record<Lang, {
   badge: string
@@ -20,7 +21,7 @@ const content: Record<Lang, {
     headingAfter: 'eshigini oching',
     subtitle: "O'zbekistondagi eng yetakchi nemis tili markazi bilan xalqaro sertifikatlarni olish, chet elda ta'lim olish va ish topish yo'lidagi ishonchli hamrohingiz.",
     ctaPrimary: 'Birinchi darsga yozilish',
-    ctaSecondary: "Kurslarni ko'rish",
+    ctaSecondary: "Darajangizni aniqlang",
   },
   EN: {
     badge: 'Study · Travel · Work',
@@ -29,7 +30,7 @@ const content: Record<Lang, {
     headingAfter: 'to new opportunities',
     subtitle: "Your trusted partner on the journey to international certificates, studying abroad, and finding employment — with Uzbekistan's leading German language center.",
     ctaPrimary: 'Enroll in first class',
-    ctaSecondary: 'View courses',
+    ctaSecondary: 'Find your level',
   },
   RU: {
     badge: 'Учёба · Путешествия · Работа',
@@ -38,7 +39,7 @@ const content: Record<Lang, {
     headingAfter: 'к новым возможностям',
     subtitle: 'Ваш надёжный партнёр на пути к международным сертификатам, обучению за рубежом и трудоустройству — с ведущим центром немецкого языка в Узбекистане.',
     ctaPrimary: 'Записаться на первый урок',
-    ctaSecondary: 'Смотреть курсы',
+    ctaSecondary: 'Определите свой уровень',
   },
   DE: {
     badge: 'Studieren · Reisen · Arbeiten',
@@ -47,13 +48,14 @@ const content: Record<Lang, {
     headingAfter: 'öffnen',
     subtitle: 'Ihr zuverlässiger Partner auf dem Weg zu internationalen Zertifikaten, Auslandsstudium und Karriere — mit dem führenden Deutschzentrum in Usbekistan.',
     ctaPrimary: 'Zum ersten Kurs anmelden',
-    ctaSecondary: 'Kurse ansehen',
+    ctaSecondary: 'Finden Sie Ihr Niveau',
   },
 }
 
 export default function Hero() {
   const { lang } = useLang()
   const c = content[lang]
+  const navigate = useNavigate()
   const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -244,15 +246,15 @@ export default function Hero() {
             <motion.button
               whileHover={{ scale: 1.03, backgroundColor: 'rgba(0,0,0,0.03)' }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => scrollTo('pricing')}
-              className="cursor-pointer h-12 px-8 rounded-full text-[15px] font-bold transition-all duration-200"
+              onClick={() => navigate({ to: '/placement-test' })}
+              className="cursor-pointer h-12 px-8 rounded-full text-[15px] font-bold transition-all duration-200 flex items-center gap-2"
               style={{
                 background: 'transparent',
                 color: 'var(--color-foreground)',
                 border: '1px solid rgba(0, 6, 18, 0.1)',
               }}
             >
-              {c.ctaSecondary}
+              <Sparkles className="h-4 w-4 text-[#106EFB]" /> {c.ctaSecondary}
             </motion.button>
           </motion.div>
         </div>

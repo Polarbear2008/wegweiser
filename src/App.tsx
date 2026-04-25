@@ -12,6 +12,7 @@ import Home from './pages/Home'
 
 // Lazy load non-critical pages — they won't be in the initial bundle
 const TeachersPage = lazy(() => import('./pages/TeachersPage'))
+const PlacementTest = lazy(() => import('./pages/PlacementTest'))
 
 // Create a root route
 const rootRoute = createRootRoute({
@@ -68,8 +69,23 @@ const teachersRoute = createRoute({
   ),
 })
 
+// Create the Placement Test route
+const placementRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/placement-test',
+  component: () => (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-[#106EFB] border-t-transparent animate-spin" />
+      </div>
+    }>
+      <PlacementTest />
+    </Suspense>
+  ),
+})
+
 // Create the route tree
-const routeTree = rootRoute.addChildren([indexRoute, teachersRoute])
+const routeTree = rootRoute.addChildren([indexRoute, teachersRoute, placementRoute])
 
 // Create the router
 const router = createRouter({ routeTree })

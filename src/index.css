@@ -375,3 +375,43 @@
     --text-9xl: 16.1vw;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  html, body {
+    height: 100vh !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .print-certificate-container, 
+  .print-certificate-container * {
+    visibility: visible;
+  }
+  .print-certificate-container {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: white !important;
+    z-index: 9999 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .print-certificate-content {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-shadow: none !important;
+    transform: scale(0.95);
+  }
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+}
