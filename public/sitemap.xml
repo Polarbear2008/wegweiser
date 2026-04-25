@@ -3,14 +3,20 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://wegweiser.uz/</loc>
-    <lastmod>2026-04-11</lastmod>
+    <lastmod>2026-04-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="uz" href="https://wegweiser.uz/" />
   </url>
   <url>
     <loc>https://wegweiser.uz/teachers</loc>
-    <lastmod>2026-04-11</lastmod>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wegweiser.uz/placement-test</loc>
+    <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
