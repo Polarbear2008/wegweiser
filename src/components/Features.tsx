@@ -170,7 +170,7 @@ export default function Features() {
         <motion.div 
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
+          animate="visible"
           viewport={{ once: true, margin: "-50px" }}
           className="flex flex-col md:flex-row gap-8 md:items-end justify-between"
         >

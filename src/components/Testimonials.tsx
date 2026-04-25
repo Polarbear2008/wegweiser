@@ -322,7 +322,7 @@ export default function Testimonials() {
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
+          animate="visible"
           viewport={{ once: true, margin: "-50px" }}
           className="flex flex-col items-center text-center gap-6"
         >
@@ -427,7 +427,7 @@ export default function Testimonials() {
         {/* Bottom Stats Row */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           className="mt-12 rounded-[2.5rem] bg-gray-50/50 border border-gray-100 p-8 md:p-14 md:py-16 grid grid-cols-1 md:grid-cols-3 gap-12"
         >

@@ -148,7 +148,7 @@ export default function Roadmap() {
         <div className="text-center mb-24">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            animate={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="badge-pill mx-auto mb-6"
           >
@@ -156,7 +156,7 @@ export default function Roadmap() {
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="text-3xl md:text-6xl font-black tracking-tighter text-[#070a11] dark:text-white"
@@ -181,7 +181,7 @@ export default function Roadmap() {
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ 
                   duration: 0.5, 
@@ -238,7 +238,7 @@ export default function Roadmap() {
         {/* CTA in Roadmap */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ delay: 0.8 }}
           className="mt-24 text-center"

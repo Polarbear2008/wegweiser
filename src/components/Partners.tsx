@@ -101,7 +101,7 @@ export default function Partners() {
         <div className="flex flex-col items-center text-center gap-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            animate={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: '-50px' }}
             className="badge-pill"
           >
@@ -111,7 +111,7 @@ export default function Partners() {
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-50px' }}
             className="font-bold text-balance"
             style={{
@@ -126,7 +126,7 @@ export default function Partners() {
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-50px' }}
             transition={{ delay: 0.1 }}
             style={{

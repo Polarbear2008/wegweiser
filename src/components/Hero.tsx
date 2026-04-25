@@ -14,7 +14,7 @@ const content: Record<Lang, {
   ctaSecondary: string
 }> = {
   UZ: {
-    badge: "O'qish · Sayohat · Ish",
+    badge: "Studieren · Reisen · Arbeiten",
     headingBefore: "Nemis tilini o'rganing,",
     headingAccent: 'yangi imkoniyatlar',
     headingAfter: 'eshigini oching',
@@ -65,7 +65,7 @@ export default function Hero() {
   const yImg = useTransform(scrollYProgress, [0, 1], [0, -100])
   const opacityImg = useTransform(scrollYProgress, [0, 0.8], [1, 0.4])
   const scaleImg = useTransform(scrollYProgress, [0, 1], [1, 0.95])
-  
+
   // Mouse tilt effect for the image
   const mouseX = useSpring(0, { stiffness: 100, damping: 30 })
   const mouseY = useSpring(0, { stiffness: 100, damping: 30 })
@@ -195,7 +195,7 @@ export default function Hero() {
           >
             {c.headingBefore}{' '}
             <span
-              className="relative inline-block"
+              className="relative inline-block py-2 -my-2"
               style={{
                 background: 'linear-gradient(135deg, #106EFB 0%, #3b82f6 100%)',
                 WebkitBackgroundClip: 'text',
@@ -266,8 +266,8 @@ export default function Hero() {
           <motion.div
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            style={{ 
-              rotateX: mouseY, 
+            style={{
+              rotateX: mouseY,
               rotateY: mouseX,
               background: '#fff',
               border: '1px solid rgba(16, 110, 251, 0.1)',
@@ -301,7 +301,7 @@ export default function Hero() {
             </div>
             {/* Browser content / Image Carousel */}
             <div className="w-full h-full relative overflow-hidden group aspect-[16/10] md:aspect-video bg-gray-100 dark:bg-gray-900">
-               <AnimatePresence mode="wait">
+              <AnimatePresence mode="wait">
                 <motion.img
                   key={currentSlide}
                   src={images[currentSlide]}
@@ -315,9 +315,9 @@ export default function Hero() {
                   className="absolute inset-0 w-full h-full object-cover z-10"
                 />
               </AnimatePresence>
-              
+
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-20" />
-              
+
               {/* Carousel Controls */}
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 z-30">
                 {images.map((_, idx) => (
@@ -327,10 +327,9 @@ export default function Hero() {
                     className="group relative p-2 focus:outline-none"
                     aria-label={`Go to slide ${idx + 1}`}
                   >
-                    <div 
-                      className={`h-1.5 rounded-full transition-all duration-500 ease-out ${
-                        idx === currentSlide ? 'w-8 bg-blue-500' : 'w-2 bg-white/40 group-hover:bg-white/60'
-                      }`}
+                    <div
+                      className={`h-1.5 rounded-full transition-all duration-500 ease-out ${idx === currentSlide ? 'w-8 bg-blue-500' : 'w-2 bg-white/40 group-hover:bg-white/60'
+                        }`}
                     />
                   </button>
                 ))}
@@ -339,7 +338,7 @@ export default function Hero() {
               {/* Navigation Arrows (Visible on hover) */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-auto">
-                  <button 
+                  <button
                     onClick={prevSlide}
                     className="p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-colors"
                   >
@@ -347,7 +346,7 @@ export default function Hero() {
                   </button>
                 </div>
                 <div className="absolute inset-y-0 right-4 flex items-center pointer-events-auto">
-                  <button 
+                  <button
                     onClick={nextSlide}
                     className="p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-colors"
                   >

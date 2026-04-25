@@ -47,6 +47,13 @@ const toggleMenuAriaByLang: Record<Lang, string> = {
   DE: 'Menü ein/aus',
 }
 
+const flagByLang: Record<Lang, string> = {
+  UZ: '🇺🇿',
+  EN: '🇬🇧',
+  RU: '🇷🇺',
+  DE: '🇩🇪',
+}
+
 export default function Navbar() {
   const { lang, setLang } = useLang()
   const [scrolled, setScrolled] = useState(false)
@@ -180,7 +187,7 @@ export default function Navbar() {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[13px] font-medium transition-colors cursor-pointer"
                 style={{ color: 'rgba(0, 6, 18, 0.7)' }}
               >
-                <Globe className="w-3.5 h-3.5" />
+                <span className="text-base leading-none">{flagByLang[lang]}</span>
                 <span className="font-bold">{lang}</span>
               </motion.button>
 
@@ -200,9 +207,10 @@ export default function Navbar() {
                           setLang(l);
                           setLangMenuOpen(false);
                         }}
-                        className={`px-4 py-2 text-[13px] font-semibold transition-colors hover:bg-black/5 text-center ${lang === l ? 'text-[#106EFB]' : 'text-black/70'}`}
+                        className={`flex items-center gap-2 px-4 py-2 text-[13px] font-semibold transition-colors hover:bg-black/5 text-left ${lang === l ? 'text-[#106EFB]' : 'text-black/70'}`}
                       >
-                        {l}
+                        <span className="text-base leading-none">{flagByLang[l]}</span>
+                        <span>{l}</span>
                       </button>
                     ))}
                   </motion.div>
@@ -298,9 +306,10 @@ export default function Navbar() {
                     setLang(l)
                     setMenuOpen(false)
                   }}
-                  className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all ${lang === l ? 'bg-[#106EFB] text-white' : 'bg-black/5 text-black/60 hover:bg-black/10'}`}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-[13px] font-bold transition-all ${lang === l ? 'bg-[#106EFB] text-white' : 'bg-black/5 text-black/60 hover:bg-black/10'}`}
                 >
-                  {l}
+                  <span className="text-base leading-none">{flagByLang[l]}</span>
+                  <span>{l}</span>
                 </button>
               ))}
             </div>

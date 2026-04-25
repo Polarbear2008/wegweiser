@@ -277,7 +277,7 @@ export default function Contact() {
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
+          animate="visible"
           viewport={{ once: true, margin: "-100px" }}
           className="relative w-full rounded-[2.5rem] py-16 px-8 md:py-20 md:px-16 overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.05] to-transparent shadow-xl"
         >
@@ -303,7 +303,7 @@ export default function Contact() {
                 style={{ lineHeight: '1.2' }}
               >
                 {c.headingLine1} <br className="hidden lg:block"/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#106EFB] to-[#5094ff]">
+                <span className="inline-block py-1 -my-1 text-transparent bg-clip-text bg-gradient-to-r from-[#106EFB] to-[#5094ff]">
                   {c.headingAccent}
                 </span>
               </motion.h2>

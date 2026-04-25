@@ -12,14 +12,19 @@ const teachers = [
     img: "/Teachers/1.webp"
   },
   {
-    name: "Xoshimov Doniyorbek",
-    degree: "Goethe B2",
-    img: "/Teachers/2.webp"
-  },
-  {
     name: "Ahmadova Azima",
     degree: "DSD C1, CEFR C1",
     img: "/Teachers/3.webp"
+  },
+  {
+    name: "Hamidova Lobarxon",
+    degree: "Test DaF C1, Goethe C1, CEFR C1",
+    img: "/Teachers/13.webp"
+  },
+  {
+    name: "Xoshimov Doniyorbek",
+    degree: "Goethe B2",
+    img: "/Teachers/2.webp"
   },
   {
     name: "Sodirjonov Tursunali",
@@ -65,11 +70,6 @@ const teachers = [
     name: "Iminova Tamilova",
     degree: "Test DaF B2",
     img: "/Teachers/12.webp"
-  },
-  {
-    name: "Hamidova Lobarxon",
-    degree: "Test DaF C1, Goethe C1, CEFR C1",
-    img: "/Teachers/13.webp"
   },
   {
     name: "Mamatisaqov Oyatillo",
@@ -157,7 +157,7 @@ export default function Teachers({ limit = 100 }: { limit?: number }) {
         <motion.div 
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
+          animate="visible"
           viewport={{ once: true, margin: "-50px" }}
           className="flex flex-col md:flex-row gap-8 md:items-end justify-between"
         >
@@ -220,7 +220,7 @@ export default function Teachers({ limit = 100 }: { limit?: number }) {
         <motion.div 
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
+          animate="visible"
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >

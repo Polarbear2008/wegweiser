@@ -1,9 +1,14 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
+export const config = {
+  runtime: 'edge',
+}
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: Request) {
   // Only allow POST
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 
   const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
@@ -11,14 +16,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (!BOT_TOKEN || !CHAT_ID) {
     console.error('Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID env vars')
-    return res.status(500).json({ error: 'Server configuration error' })
+    return new Response(JSON.stringify({ error: 'Server configuration error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 
   try {
-    const { text, parse_mode } = req.body
+    const body = await req.json()
+    const { text, parse_mode } = body
 
     if (!text) {
-      return res.status(400).json({ error: 'Missing "text" in request body' })
+      return new Response(JSON.stringify({ error: 'Missing "text" in request body' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
     }
 
     const telegramRes = await fetch(
@@ -35,9 +47,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     )
 
     const data = await telegramRes.json()
-    return res.status(telegramRes.ok ? 200 : 502).json(data)
+    return new Response(JSON.stringify(data), {
+      status: telegramRes.ok ? 200 : 502,
+      headers: { 'Content-Type': 'application/json' },
+    })
   } catch (error) {
     console.error('Telegram API error:', error)
-    return res.status(500).json({ error: 'Failed to send message' })
+    return new Response(JSON.stringify({ error: 'Failed to send message' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 }

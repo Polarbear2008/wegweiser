@@ -23,8 +23,6 @@ const footerLinksByLang: Record<Lang, Array<{
       items: [
         { label: 'Biz haqimizda', href: 'about' },
         { label: "O'qituvchilar", href: 'teachers', isPage: true },
-        { label: 'Blog', href: '#' },
-        { label: 'Hamkorlar', href: '#' },
       ],
     },
     {
@@ -59,8 +57,6 @@ const footerLinksByLang: Record<Lang, Array<{
       items: [
         { label: 'About us', href: 'about' },
         { label: 'Teachers', href: 'teachers', isPage: true },
-        { label: 'Blog', href: '#' },
-        { label: 'Partners', href: '#' },
       ],
     },
     {
@@ -95,8 +91,6 @@ const footerLinksByLang: Record<Lang, Array<{
       items: [
         { label: 'О нас', href: 'about' },
         { label: 'Преподаватели', href: 'teachers', isPage: true },
-        { label: 'Блог', href: '#' },
-        { label: 'Партнёры', href: '#' },
       ],
     },
     {
@@ -131,8 +125,6 @@ const footerLinksByLang: Record<Lang, Array<{
       items: [
         { label: 'Über uns', href: 'about' },
         { label: 'Lehrkräfte', href: 'teachers', isPage: true },
-        { label: 'Blog', href: '#' },
-        { label: 'Partner', href: '#' },
       ],
     },
     {
@@ -275,7 +267,7 @@ export default function Footer() {
         <div className="relative w-full select-none pointer-events-none pt-10">
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: "circOut" }}
             className="footer-display-text text-[15vw] leading-none font-black text-center whitespace-nowrap overflow-hidden"

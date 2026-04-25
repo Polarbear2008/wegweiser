@@ -181,7 +181,7 @@ export default function Pricing() {
         <div className="flex flex-col items-center text-center gap-6 max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            animate={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             className="badge-pill" 
             style={{ background: 'rgba(255, 255, 255, 0.05)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)' }}
@@ -192,7 +192,7 @@ export default function Pricing() {
           
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             className="text-balance font-bold text-white text-center"
             style={{

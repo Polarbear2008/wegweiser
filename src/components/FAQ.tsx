@@ -192,7 +192,7 @@ export default function FAQ() {
         <motion.div 
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
+          animate="visible"
           viewport={{ once: true, margin: "-100px" }}
           className="flex flex-col md:flex-row gap-8 md:items-end justify-between"
         >
@@ -233,7 +233,7 @@ export default function FAQ() {
           {/* Left Column: Image / Stats */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            animate={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "circOut" }}
             className="lg:col-span-4 flex flex-col gap-8"
@@ -273,7 +273,7 @@ export default function FAQ() {
           <motion.div 
             variants={containerVariants}
             initial="hidden"
-            whileInView="visible"
+            animate="visible"
             viewport={{ once: true }}
             className="lg:col-span-8 flex flex-col gap-4"
           >

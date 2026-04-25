@@ -122,7 +122,7 @@ export default function Certificates() {
         <div className="flex flex-col items-center text-center gap-4 max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            animate={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             className="badge-pill"
           >
@@ -132,7 +132,7 @@ export default function Certificates() {
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             className="text-balance font-bold text-center"
             style={{
@@ -147,7 +147,7 @@ export default function Certificates() {
 
           <motion.p
             initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             className="text-gray-500 text-base font-medium"
           >

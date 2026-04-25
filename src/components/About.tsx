@@ -97,7 +97,7 @@ export default function About() {
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
+          animate="visible"
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
         >
@@ -184,7 +184,7 @@ export default function About() {
             {/* Minimalist Floating Card Overlay */}
             <motion.div
               initial={{ x: 20, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
+              animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.8 }}
               className="absolute bottom-8 left-8 right-8 p-6 rounded-2xl backdrop-blur-xl border border-white/10"
               style={{ background: 'rgba(255, 255, 255, 0.05)' }}
