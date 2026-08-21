@@ -5,6 +5,7 @@ import { useLang } from '../i18n/LanguageProvider'
 import type { Lang } from '../i18n/languages'
 
 const sharedFeatures = [
+  'shared_all_levels',
   'shared_lessons_3',
   'shared_duration',
   'shared_events',
@@ -15,11 +16,21 @@ const sharedFeatures = [
 ]
 
 const intensiveFeatures = [
+  'shared_all_levels',
   'intensive_lessons_5',
   'shared_duration',
   'shared_events',
   'shared_teachers',
   'shared_support_teacher',
+  'shared_facilities',
+  'shared_coworking',
+]
+
+const individualFeatures = [
+  'individual_lessons',
+  'shared_duration',
+  'shared_events',
+  'shared_teachers',
   'shared_facilities',
   'shared_coworking',
 ]
@@ -32,19 +43,13 @@ const pricingCategories = [
 
 const pricingData: any = {
   standard: [
-    { level: 'A1', price: '350 000', period: 'month', features: sharedFeatures },
-    { level: 'A2', price: '370 000', period: 'month', features: sharedFeatures },
-    { level: 'B1', price: '400 000', period: 'month', features: sharedFeatures, popular: true },
-    { level: 'B2', price: '450 000', period: 'month', features: sharedFeatures },
+    { price: '639 000', period: 'month', features: sharedFeatures, popular: true },
   ],
   intensive: [
-    { level: 'A1', price: '600 000', period: 'month', features: intensiveFeatures },
-    { level: 'A2', price: '700 000', period: 'month', features: intensiveFeatures },
-    { level: 'B1', price: '800 000', period: 'month', features: intensiveFeatures, popular: true },
-    { level: 'B2', price: '850 000', period: 'month', features: intensiveFeatures },
+    { price: '990 000', period: 'month', features: intensiveFeatures, popular: true },
   ],
   individual: [
-    { level: 'Individual', price: '1 300 000', period: 'month', icon: User, features: sharedFeatures, popular: true },
+    { price: '1 899 000', period: 'month', icon: User, features: individualFeatures, popular: true },
   ],
 }
 
@@ -61,11 +66,14 @@ export default function Pricing() {
       headerLine1: string
       headerLine2: string
       tabs: { standard: string; intensive: string; individual: string }
-      levelWord: string
+      groupWord: string
+      allLevels: string
+      individualTitle: string
       currencyUnit: string
       monthWord: string
       cta: string
       scheduleNote: string
+      priceNote: string
       features: Record<string, string>
     }
   > = {
@@ -75,12 +83,17 @@ export default function Pricing() {
       headerLine1: "O'zingizga mos o'quv",
       headerLine2: 'shaklini tanlang',
       tabs: { standard: 'Standart', intensive: 'Intensiv', individual: 'Individual' },
-      levelWord: 'DAROJA',
+      groupWord: 'GURUH',
+      allLevels: 'Barcha darajalar (A1–C1)',
+      individualTitle: 'Shaxsiy darslar',
       currencyUnit: "so'm",
       monthWord: 'oy',
       cta: 'Boshlash',
       scheduleNote: '📅 Siz uchun qulay kun va vaqtda darslar qo‘yib beriladi',
+      priceNote: '📌 Yagona narx — barcha darajalar uchun bir xil. 2026-yil sentyabr oyidan amal qiladi.',
       features: {
+        shared_all_levels: 'Barcha darajalar uchun yagona narx',
+        individual_lessons: 'Shaxsiy darslar (1:1)',
         shared_lessons_3: 'Haftada 3 marotaba dars',
         intensive_lessons_5: 'Haftada 5 marotaba dars',
         shared_duration: 'Har bir dars 1.5 soat',
@@ -97,12 +110,17 @@ export default function Pricing() {
       headerLine1: 'Choose the study',
       headerLine2: 'format that suits you',
       tabs: { standard: 'Standard', intensive: 'Intensive', individual: 'Individual' },
-      levelWord: 'Level',
+      groupWord: 'GROUP',
+      allLevels: 'All levels (A1–C1)',
+      individualTitle: 'Private lessons',
       currencyUnit: 'UZS',
       monthWord: 'month',
       cta: 'Get started',
       scheduleNote: '📅 We will schedule lessons at a convenient day and time for you.',
+      priceNote: '📌 One price for all levels. Effective from September 2026.',
       features: {
+        shared_all_levels: 'One price for all levels',
+        individual_lessons: 'Private lessons (1:1)',
         shared_lessons_3: 'Classes 3 times a week',
         intensive_lessons_5: 'Classes 5 times a week',
         shared_duration: 'Each class 1.5 hours',
@@ -119,12 +137,17 @@ export default function Pricing() {
       headerLine1: 'Выберите подходящий',
       headerLine2: 'формат обучения',
       tabs: { standard: 'Стандарт', intensive: 'Интенсив', individual: 'Индивидуально' },
-      levelWord: 'Уровень',
+      groupWord: 'ГРУППА',
+      allLevels: 'Все уровни (A1–C1)',
+      individualTitle: 'Индивидуальные занятия',
       currencyUnit: 'СУМ',
       monthWord: 'мес.',
       cta: 'Начать',
       scheduleNote: '📅 Мы подберем удобный для вас день и время занятий.',
+      priceNote: '📌 Единая цена для всех уровней. Действует с сентября 2026 года.',
       features: {
+        shared_all_levels: 'Единая цена для всех уровней',
+        individual_lessons: 'Индивидуальные занятия (1:1)',
         shared_lessons_3: 'Занятия 3 раза в неделю',
         intensive_lessons_5: 'Занятия 5 раз в неделю',
         shared_duration: 'Каждое занятие 1,5 часа',
@@ -141,12 +164,17 @@ export default function Pricing() {
       headerLine1: 'Wählen Sie den',
       headerLine2: 'passenden Kursmodus',
       tabs: { standard: 'Standard', intensive: 'Intensiv', individual: 'Individuell' },
-      levelWord: 'Niveau',
+      groupWord: 'GRUPPE',
+      allLevels: 'Alle Niveaus (A1–C1)',
+      individualTitle: 'Einzelunterricht',
       currencyUnit: 'UZS',
       monthWord: 'Monat',
       cta: 'Loslegen',
       scheduleNote: '📅 Wir legen die Stunden an einem für Sie passenden Tag und zur passenden Zeit fest.',
+      priceNote: '📌 Einheitlicher Preis für alle Niveaus. Gültig ab September 2026.',
       features: {
+        shared_all_levels: 'Einheitlicher Preis für alle Niveaus',
+        individual_lessons: 'Einzelunterricht (1:1)',
         shared_lessons_3: 'Kurse 3-mal pro Woche',
         intensive_lessons_5: 'Kurse 5-mal pro Woche',
         shared_duration: 'Jede Stunde 1,5 Stunden',
@@ -235,7 +263,7 @@ export default function Pricing() {
         </div>
 
         {/* Pricing Cards Grid */}
-        <div className="min-h-[480px]">
+        <div className="min-h-[420px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -243,11 +271,11 @@ export default function Pricing() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className={`grid gap-6 ${activeTab === 'individual' ? 'grid-cols-1 max-w-sm mx-auto w-full' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'}`}
+              className="grid grid-cols-1 max-w-md mx-auto w-full gap-6"
             >
-              {pricingData[activeTab].map((plan: any, idx: number) => (
+              {pricingData[activeTab].map((plan: any) => (
                 <motion.div
-                  key={plan.level}
+                  key={activeTab}
                   whileHover={{ y: -8 }}
                   className={`relative flex flex-col rounded-[2rem] border p-6 md:p-7 transition-all duration-500 overflow-hidden ${
                     plan.popular 
@@ -262,13 +290,13 @@ export default function Pricing() {
                   )}
 
                   <div className="flex flex-col gap-6 h-full">
-                    {/* Level */}
+                    {/* Plan */}
                     <div className="flex flex-col gap-1">
                       <span className="text-[#106EFB] font-black text-[10px] tracking-widest uppercase opacity-70">
-                        {c.tabs[activeTab]} {c.levelWord}
+                        {c.tabs[activeTab]} {activeTab === 'individual' ? '' : c.groupWord}
                       </span>
                       <h3 className="text-white text-2xl font-black tracking-tight">
-                        {plan.level}
+                        {activeTab === 'individual' ? c.individualTitle : c.allLevels}
                       </h3>
                     </div>
 
@@ -319,10 +347,11 @@ export default function Pricing() {
           </AnimatePresence>
         </div>
 
-        {/* Schedule note */}
-        <p className="text-center text-white/40 text-sm font-medium mt-2">
-          {c.scheduleNote}
-        </p>
+        {/* Notes */}
+        <div className="flex flex-col gap-2 text-center mt-2">
+          <p className="text-white/40 text-sm font-medium">{c.scheduleNote}</p>
+          <p className="text-white/30 text-sm font-medium">{c.priceNote}</p>
+        </div>
       </div>
     </section>
   )
